@@ -56,7 +56,7 @@ export interface EventFace {
     [key: string]: string | number | boolean;
     _id: string;
     level: number;
-    salinity: number;
+    pressure: number;
     volume: number;
     signal: 'good' | 'nosignal';
     date_in_ms: number;
@@ -66,7 +66,7 @@ export interface EventFaceHandelExel {
     [key: string]: string | number | boolean;
     _id: string;
     level: number;
-    salinity: number;
+    pressure: number;
     volume: number;
     signal: 'good' | 'nosignal';
     date_in_ms: number;

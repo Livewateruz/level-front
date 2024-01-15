@@ -15,7 +15,7 @@ const Index = () => {
 
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(setPageTitle('Dashboard'));
+        dispatch(setPageTitle('Asosiy sahifa'));
         api('basedata?page[limit]=50' ,  { headers: { authorization: `Bearer ${token}` } }).then(res => {
             const { data } = res.data;
             const last_updated = data.filter((el: EventFace) => el?.date_in_ms === data[0].date_in_ms);
@@ -51,7 +51,7 @@ const Index = () => {
                             <th className='text-center'>#</th>
                             <th className='text-center'>Seriya</th>
                             <th className='text-center'>Suv satxi(sm)</th>
-                            <th className='text-center'>Tuzlik darajasi(EC25)</th>
+                            <th className='text-center'>Hajm(m³/s)</th>
                             <th className='text-center'>Bosim (kPa)</th>
                             <th className='text-center'>Vaqt</th>
                             <th className='text-center'>Sana</th>
@@ -67,10 +67,10 @@ const Index = () => {
                                         <div className='whitespace-nowrap'>{data?.device?.serie}</div>
                                     </td>
                                     <td className=' '>
-                                        <div className='whitespace-nowrap'>{data.level}</div>
+                                        <div className='whitespace-nowrap'>{data?.level}</div>
                                     </td>
                                     <td className=' '>
-                                        <div className='whitespace-nowrap'>{data.salinity}</div>
+                                        <div className='whitespace-nowrap'>{data.vol}</div>
                                     </td>
                                     <td className=' '>
                                         <div className='whitespace-nowrap'>{data.volume}</div>
