@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import MaskedInput from 'react-text-mask';
-import Swal from 'sweetalert2';
 import { IRootState } from '../../store';
 import { RegionFace, UserFace } from '../../types';
 import { api } from '../../utils/api';
@@ -12,7 +10,6 @@ import { toast } from '../../utils/toast';
 
 const AddDevice = () => {
     const navigate = useNavigate();
-    const { t } = useTranslation();
     const [data, setData] = useState({});
     const { token, user } = useSelector((state: IRootState) => state.data);
 
@@ -20,11 +17,13 @@ const AddDevice = () => {
     const [regions, setRegions] = useState<{ data: RegionFace[] }>({ data: [] });
     const [users, setUsers] = useState<{ data: UserFace[] }>({ data: [] });
     const [loading, setLoading] = useState<boolean>(false);
+    const [file, setFile] = useState<File | null>(null);
+
     useEffect(() => {
         getData({ url: 'regions', setData: setRegions, token });
         getData({ url: 'users', setData: setUsers, token });
     }, []);
-
+    console.log(file);
     const showMessage = (message: String = '') => {
         toast.fire({
             icon: 'success',
@@ -40,12 +39,11 @@ const AddDevice = () => {
         }));
     };
 
-
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        api.post('devices', data, { headers: { authorization: `Bearer ${token}` } })
+        api.post('devices', {...data , file}, { headers: { authorization: `Bearer ${token}`,"Content-Type" :"multipart/form-data" } })
             .then(res => {
-                toast.fire({ icon: 'success', padding: '10px 20px', title: 'Qo\'shildi!' });
+                toast.fire({ icon: 'success', padding: '10px 20px', title: "Qo'shildi!" });
             })
             .catch(err => {
                 toast.fire({ icon: 'error', padding: '10px 20px', title: err.message });
@@ -57,7 +55,7 @@ const AddDevice = () => {
             <ul className='flex space-x-2 rtl:space-x-reverse'>
                 <li>
                     <Link to='/' className='text-primary hover:underline'>
-                    Asosiy sahifa
+                        Asosiy sahifa
                     </Link>
                 </li>
                 <li>
@@ -127,7 +125,25 @@ const AddDevice = () => {
                             </button>
                         </div>
                     </div>
+
                     <div className='mb-6  w-1/2'>
+                        <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white' htmlFor='multiple_files'>
+                            Passport seriyasini yuklash
+                        </label>
+                        <input
+                            required
+                            onChange={e => {
+                                const selectedFile = e.target?.files?.[0];
+                                if (selectedFile) {
+                                    setFile(selectedFile);
+                                }
+                            }}
+                            className='block w-full form-input '
+                            id='multiple_files'
+                            accept='.xlsx'
+                            type='file'
+                        />
+
                         <div className='flex items-center mt-4'>
                             <label htmlFor='invoiceLabel' className='flex-1 ltr:mr-2 rtl:ml-2 mb-0'>
                                 Foydalanuvchi

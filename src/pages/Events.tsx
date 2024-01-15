@@ -46,8 +46,8 @@ function Events () {
         e.preventDefault();
         setPage(0);
         getData({
-            url: `/basedata?page[offset]=${page}&${from ? `filter[start]=${from}` : ''}&${to ? `filter[end]=${to}` : ''}&${device ? `filter[device]=${device}` : ''}&${
-                data?.region ? `filter[region]=${data.region}` : ''
+            url: `/basedata?page[offset]=${page}${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}${
+                data?.region ? `&filter[region]=${data.region}` : ''
             }`,
             setData: setEvents,
             setLoading,
@@ -99,8 +99,8 @@ function Events () {
                             Sahifadan yuklash
                         </button>
                         <a
-                            href={`http://back1.livewater.uz/basedata/xlsx?page[offset]=${page}&${from ? `filter[start]=${from}` : ''}&${to ? `filter[end]=${to}` : ''}&${device ? `filter[device]=${device}` : ''}&${
-                                data?.region ? `filter[region]=${data.region}` : ''
+                            href={`http://back2.livewater.uz/basedata/xlsx?page[offset]=${page}${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}${
+                                data?.region ? `&filter[region]=${data.region}` : ''
                             }`}
                             className='btn btn-primary btn-sm m-1'
                         >

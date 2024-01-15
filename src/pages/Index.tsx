@@ -70,10 +70,10 @@ const Index = () => {
                                         <div className='whitespace-nowrap'>{data?.level}</div>
                                     </td>
                                     <td className=' '>
-                                        <div className='whitespace-nowrap'>{data.vol}</div>
+                                        <div className='whitespace-nowrap'>{data?.volume}</div>
                                     </td>
                                     <td className=' '>
-                                        <div className='whitespace-nowrap'>{data.volume}</div>
+                                        <div className='whitespace-nowrap'>{data?.pressure}</div>
                                     </td>
 
                                     <td className=' '>
