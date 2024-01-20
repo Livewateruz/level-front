@@ -11,16 +11,20 @@ import { compileTimes, getDateFromTimestamp, getHourAndMinutesFromTimestamp } fr
 import { downloadExcel } from 'react-export-table-to-excel';
 import { Miniloader } from './Component/Miniloader';
 import { IRootState } from '../store';
+import axios from 'axios';
 const options = [
     { value: '500', label: '500' },
     { value: '1000', label: '1000' },
     { value: '1500', label: '1500' },
-    { value: '2000', label: '2000' }
+    { value: '2000', label: '2000' },
+    { value: '5000', label: '5000' },
+    { value: '7000', label: '7000' },
 ];
 function Events () {
     const dispatch = useDispatch();
     const [date3, setDate3] = useState<any>([]);
     const { to, from } = compileTimes(date3);
+    const [progress, setProgress] = useState(0);
     const [device, setDevice] = useState<string>();
     const [data, setData] = useState<{ region: string; limit: string }>();
     const [events, setEvents] = useState<{ total: number; offset: number; data: EventFace[]; limit: number }>({ data: [], limit: 0, offset: 0, total: 0 });
@@ -61,7 +65,7 @@ function Events () {
             token
         });
     };
-    function handleDownloadExcel () {
+    const handleDownloadExcel = () =>{
         const handleExel: EventFaceHandelExel[] = events.data.map((el: EventFace) => {
             const { device, ...data } = el;
             return {
@@ -78,13 +82,41 @@ function Events () {
             }
         });
     }
+
+    const handleDownloadAll = () => {
+        const fileDownloadUrl = `https://back2.livewater.uz/basedata/xlsx?${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}${
+            data?.region ? `&filter[region]=${data.region}` : ''
+        }${data?.limit ? `&page[limit]=${data.limit}` : ''}`;
+        axios({
+            url: fileDownloadUrl,
+            method: 'GET',
+            responseType: 'blob', 
+            onDownloadProgress: e => {
+                const newProgress = Math.round((e.loaded * 100) / e.total!);
+                setProgress(newProgress);
+
+                if (newProgress === 100) {
+                }
+            }
+        })
+            .then(response => {
+                const blob = new Blob([response.data], { type: response.headers['content-type'] });
+                const url = window.URL.createObjectURL(blob);
+                window.open(url);
+            })
+            .catch(error => {
+                console.error('Error downloading file:', error);
+            })
+            .finally(() => {
+                setProgress(0);
+            });
+    };
     const handleChange = (e: any) => {
         setData(prevData => ({
             ...prevData!,
             [e.target.name]: e.target.value
         }));
     };
-    console.log(data);
     return (
         <>
             <ul className='flex space-x-2 rtl:space-x-reverse'>
@@ -121,10 +153,9 @@ function Events () {
                             </svg>
                             Sahifadan yuklash
                         </button>
-                        <a
-                            href={`http://back2.livewater.uz/basedata/xlsx?${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}${
-                                data?.region ? `&filter[region]=${data.region}` : ''
-                            }${data?.limit ? `&page[limit]=${data.limit}` : ''}`}
+                        <button
+                        disabled={progress !==0}
+                        onClick={handleDownloadAll}
                             className='btn btn-primary btn-sm m-1'
                         >
                             <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='w-5 h-5 ltr:mr-2 rtl:ml-2'>
@@ -135,8 +166,8 @@ function Events () {
                                 <path opacity='0.5' d='M13 2.5V5C13 7.35702 13 8.53553 13.7322 9.26777C14.4645 10 15.643 10 18 10H22' stroke='currentColor' strokeWidth='1.5' />
                                 <path opacity='0.5' d='M7 14L6 15L7 16M11.5 16L12.5 17L11.5 18M10 14L8.5 18' stroke='currentColor' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
                             </svg>
-                            Barchasini yuklash
-                        </a>
+                           {progress === 0 ?' Barchasini yuklash' :`Yuklanmoqda...${progress}%`}
+                        </button>
                     </div>
                 </div>
                 <div className='flex flex-row items-stretch gap-5 '>
