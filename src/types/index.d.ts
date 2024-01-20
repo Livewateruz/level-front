@@ -5,9 +5,7 @@ export interface DevicesFace {
     long: number;
     serie: string;
     device_privet_key: string;
-    ip_address: string;
     date: number;
-    port: number;
     owner: UserFace;
     created_at: string;
     updated_at: string;
@@ -19,9 +17,7 @@ export interface DevicesFaceOpt {
     long?: number;
     serie?: string;
     device_privet_key?: string;
-    ip_address?: string;
     date?: number;
-    port?: number;
     owner?: string;
     created_at?: string;
     updated_at?: string;

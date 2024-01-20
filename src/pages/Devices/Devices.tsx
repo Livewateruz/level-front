@@ -91,24 +91,7 @@ function Devices () {
                                         </div>
                                     )
                                 },
-                                {
-                                    accessor: 'Ip Address',
-                                    render: ({ ip_address }) => (
-                                        <span>
-                                            <div className='font-semibold'>{`${ip_address}`}</div>
-                                        </span>
-                                    ),
-                                    sortable: false
-                                },
-                                {
-                                    accessor: 'Port',
-                                    render: ({ port }) => (
-                                        <span>
-                                            <div className='font-semibold'>{`${port}`}</div>
-                                        </span>
-                                    ),
-                                    sortable: false
-                                },
+                                
                                 {
                                     accessor: 'Egasi',
                                     sortable: false,

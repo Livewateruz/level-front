@@ -11,12 +11,18 @@ import { compileTimes, getDateFromTimestamp, getHourAndMinutesFromTimestamp } fr
 import { downloadExcel } from 'react-export-table-to-excel';
 import { Miniloader } from './Component/Miniloader';
 import { IRootState } from '../store';
+const options = [
+    { value: '500', label: '500' },
+    { value: '1000', label: '1000' },
+    { value: '1500', label: '1500' },
+    { value: '2000', label: '2000' }
+];
 function Events () {
     const dispatch = useDispatch();
     const [date3, setDate3] = useState<any>([]);
     const { to, from } = compileTimes(date3);
     const [device, setDevice] = useState<string>();
-    const [data, setData] = useState<{ region: string }>();
+    const [data, setData] = useState<{ region: string; limit: string }>();
     const [events, setEvents] = useState<{ total: number; offset: number; data: EventFace[]; limit: number }>({ data: [], limit: 0, offset: 0, total: 0 });
     const [regions, setRegions] = useState<{ data: RegionFace[] }>({ data: [] });
     const [devices, setDevices] = useState<{ data: DevicesFace[] }>({ data: [] });
@@ -34,7 +40,8 @@ function Events () {
     }, [data?.region]);
     useEffect(() => {
         getData({
-            url: `/basedata?page[offset]=${page}&${from?`filter[start]=${from}`:''}&${to?`filter[end]=${to}`:''}&${device?`filter[device]=${device}`:''}&${data?.region?`filter[region]=${data?.region}`:''
+            url: `/basedata?page[offset]=${page}&${from ? `filter[start]=${from}` : ''}&${to ? `filter[end]=${to}` : ''}&${device ? `filter[device]=${device}` : ''}&${
+                data?.region ? `filter[region]=${data?.region}` : ''
             }`,
             setData: setEvents,
             setLoading,
@@ -71,6 +78,13 @@ function Events () {
             }
         });
     }
+    const handleChange = (e: any) => {
+        setData(prevData => ({
+            ...prevData!,
+            [e.target.name]: e.target.value
+        }));
+    };
+    console.log(data);
     return (
         <>
             <ul className='flex space-x-2 rtl:space-x-reverse'>
@@ -86,7 +100,16 @@ function Events () {
             <div className='panel  mt-5'>
                 <div className='flex items-center mb-5  justify-between '>
                     <h5 className='font-semibold text-lg dark:text-white-light'>Barchasi ({events?.total})</h5>
-                    <div className='flex '>
+                    <div className=' flex justify-end  items-center w-1/2'>
+                        <select className='form-input h-13 w-fit  flex ' name='limit' onChange={e => handleChange(e)}>
+                            <option value={''}>Limit </option>
+                            {options.map((el, i) => (
+                                <option value={el.value} key={i}>
+                                    {el.label}
+                                </option>
+                            ))}
+                        </select>
+
                         <button type='button' className='btn btn-primary btn-sm m-1' onClick={handleDownloadExcel}>
                             <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='w-5 h-5 ltr:mr-2 rtl:ml-2'>
                                 <path
@@ -99,9 +122,9 @@ function Events () {
                             Sahifadan yuklash
                         </button>
                         <a
-                            href={`http://back2.livewater.uz/basedata/xlsx?page[offset]=${page}${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}${
+                            href={`http://back2.livewater.uz/basedata/xlsx?${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}${
                                 data?.region ? `&filter[region]=${data.region}` : ''
-                            }`}
+                            }${data?.limit ? `&page[limit]=${data.limit}` : ''}`}
                             className='btn btn-primary btn-sm m-1'
                         >
                             <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='w-5 h-5 ltr:mr-2 rtl:ml-2'>
@@ -131,12 +154,12 @@ function Events () {
                         />
                         <div>
                             <label className='inline-flex justify-between items-center'>
-                                <input onChange={e => setData({ region: e.target.value })} type='radio' name='outline_radio' value={''} className='form-radio outline-success' />
+                                <input onChange={e => handleChange(e)} type='radio' name='region' value={''} className='form-radio outline-success' />
                                 <span>Hammasi</span>
                             </label>
                             {regions.data.map((el, i) => (
                                 <label key={i} className='inline-flex justify-between items-center'>
-                                    <input onChange={e => setData({ region: e.target.value })} type='radio' name='outline_radio' value={el._id} className='form-radio outline-success' />
+                                    <input onChange={e => handleChange(e)} type='radio' name='region' value={el._id} className='form-radio outline-success' />
                                     <span>{el.name}</span>
                                 </label>
                             ))}
