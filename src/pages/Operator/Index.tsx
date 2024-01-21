@@ -51,11 +51,11 @@ const IndexOperator = () => {
                             <th className='text-center'>#</th>
                             <th className='text-center'>Seriya</th>
                             <th className='text-center'>Suv satxi(sm)</th>
-                            <th className='text-center'>Tuzlik darajasi(EC25)</th>
+                            <th className='text-center'>Hajm</th>
                             <th className='text-center'>Bosim (kPa)</th>
                             <th className='text-center'>Vaqt</th>
                             <th className='text-center'>Sana</th>
-                            <th className='text-center'>Signal darajasi</th>
+                            <th className='text-center'>Signal holati</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,13 +67,13 @@ const IndexOperator = () => {
                                         <div className='whitespace-nowrap'>{data?.device?.serie}</div>
                                     </td>
                                     <td>
-                                        <div className='whitespace-nowrap'>{data.level}</div>
+                                        <div className='whitespace-nowrap'>{data?.level}</div>
                                     </td>
                                     <td>
-                                        <div className='whitespace-nowrap'>{data.salinity}</div>
+                                        <div className='whitespace-nowrap'>{data?.volume}</div>
                                     </td>
                                     <td>
-                                        <div className='whitespace-nowrap'>{data.volume}</div>
+                                        <div className='whitespace-nowrap'>{data?.pressure}</div>
                                     </td>
 
                                     <td>
@@ -85,7 +85,7 @@ const IndexOperator = () => {
                                     <td>
                                         <div className='whitespace-nowrap    flex items-center gap-2'>
                                             {' '}
-                                            {data.signal ? <GreenDot /> : <RedDot />} {data?.signal ? 'Yaxshi' : "Signal yo'q"}{' '}
+                                            {data.signal ==='good' ? <GreenDot /> : <RedDot />} {data?.signal === "good"? 'Yaxshi' : "Signal yo'q"}{' '}
                                         </div>
                                     </td>
                                 </tr>

@@ -86,7 +86,7 @@ function ServerEvents () {
                     </ul>
                     <div className='absolute right-3' >{loading ? <Miniloader/> :""}</div>
                 </div>
-                <div className=' flex  flex-wrap justify-center gap-5 '>
+                <div className=' flex  flex-wrap justify-start gap-5 '>
                     {data?.data.map((el , i) => (
                         <div key={i} className=' row-span-2  w-[49%] bg-white shadow-[4px_6px_10px_-3px_#bfc9d4] rounded border border-[#e0e6ed] dark:border-[#1b2e4b] dark:bg-[#191e3a] dark:shadow-none'>
                             <div className='p-3 flex items-center flex-col sm:flex-row'>
@@ -101,7 +101,7 @@ function ServerEvents () {
                                     <div className='mb-2 text-white-dark flex items-center justify-between'>
                                         <Tippy
                                             content={
-                                                basedata ? `Level : ${basedata?.level}  Volume : ${basedata?.volume} Salinity : ${basedata?.salinity} Signal : ${basedata?.signal}` : <Miniloader />
+                                                basedata ? `Level : ${basedata?.level}  Volume : ${basedata?.volume} Pressure : ${basedata?.pressure} Signal : ${basedata?.signal}` : <Miniloader />
                                             }
                                             trigger='click'
                                         >

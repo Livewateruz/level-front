@@ -34,7 +34,7 @@ function Events () {
     const [page, setPage] = useState<number>(0);
     const { token } = useSelector((state: IRootState) => state.data);
 
-    const header = ['_id', 'level', 'volume', 'salinity', 'date_in_ms', 'signal', 'updated_at', 'created_at', 'serie'];
+    const header = ['_id', 'level', 'volume', 'date_in_ms', 'signal', 'updated_at', 'created_at', 'serie'];
     useEffect(() => {
         dispatch(setPageTitle('Constructor'));
         getData({ url: '/regions', setData: setRegions, token });

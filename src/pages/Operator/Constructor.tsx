@@ -23,7 +23,7 @@ function ConstructorOperator () {
     const [page, setPage] = useState<number>(0);
     const { token } = useSelector((state: IRootState) => state.data);
 
-    const header = ['_id', 'level', 'volume', 'salinity', 'date_in_ms'];
+    const header = ['_id', 'level', 'volume' , "pressure", 'date_in_ms'];
     useEffect(() => {
         dispatch(setPageTitle('Events'));
         getData({url : `devices/user` ,token , setData : setDevices })
@@ -138,7 +138,7 @@ function ConstructorOperator () {
                                     <th className='text-center text-xs'>#</th>
                                     <th className='text-center text-xs'>Serie</th>
                                     <th className='text-center text-xs'>Suv satxi(sm)</th>
-                                    <th className='text-center text-xs'>Tuzlik darajasi(EC25)</th>
+                                    <th className='text-center text-xs'>Hajm</th>
                                     <th className='text-center text-xs'>Bosim (kPa)</th>
                                     <th className='text-center text-xs'>Vaqt</th>
                                     <th className='text-center text-xs'>Sana</th>
@@ -157,10 +157,10 @@ function ConstructorOperator () {
                                                 <div className='whitespace-nowrap text-center'>{data?.level}</div>
                                             </td>
                                             <td className=''>
-                                                <div className='whitespace-nowrap text-center '>{data?.salinity}</div>
+                                                <div className='whitespace-nowrap text-center '>{data?.volume}</div>
                                             </td>
                                             <td className=''>
-                                                <div className='whitespace-nowrap text-center '>{data?.volume}</div>
+                                                <div className='whitespace-nowrap text-center '>{data?.pressure}</div>
                                             </td>
                                             <td className=''>
                                                 <div className=' block '>{getHourAndMinutesFromTimestamp(data?.date_in_ms || 0)}</div>

@@ -7,30 +7,49 @@ import { RegionFace, UserFace } from '../../types';
 import { api } from '../../utils/api';
 import getData from '../../utils/getData';
 import { toast } from '../../utils/toast';
+import axios from 'axios';
 
 const AddDevice = () => {
     const navigate = useNavigate();
-    const [data, setData] = useState({});
+    const [data, setData] = useState<{ serie: string }>({ serie: '' });
     const { token, user } = useSelector((state: IRootState) => state.data);
 
     const dispatch = useDispatch();
     const [regions, setRegions] = useState<{ data: RegionFace[] }>({ data: [] });
+    const [isWorking, setWorking] = useState<boolean>(false);
     const [users, setUsers] = useState<{ data: UserFace[] }>({ data: [] });
     const [loading, setLoading] = useState<boolean>(false);
     const [file, setFile] = useState<File | null>(null);
+    useEffect(() => {
+        // Replace 'wss://your-websocket-server.com' with your WebSocket server URL
+        const socket = new WebSocket('ws://livewater.uz:1880/modem');
 
+        // Connection opened
+        socket.addEventListener('open', event => {});
+
+        // Listen for messages
+        socket.addEventListener('message', event => {
+            setWorking(true);
+            toast.fire({
+                icon: 'success',
+                title: 'Qurilma ishlayapti',
+                padding: '10px 20px'
+            });
+            // Handle the received message as needed
+        });
+
+        // Connection closed
+        socket.addEventListener('close', event => {});
+
+        // Clean up the WebSocket connection when the component unmounts
+        return () => {
+            socket.close();
+        };
+    }, []);
     useEffect(() => {
         getData({ url: 'regions', setData: setRegions, token });
         getData({ url: 'users', setData: setUsers, token });
     }, []);
-    console.log(file);
-    const showMessage = (message: String = '') => {
-        toast.fire({
-            icon: 'success',
-            title: message || 'Copied successfully.',
-            padding: '10px 20px'
-        });
-    };
 
     const handleChange = (e: any) => {
         setData(prevData => ({
@@ -41,7 +60,7 @@ const AddDevice = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        api.post('devices', {...data , file}, { headers: { authorization: `Bearer ${token}`,"Content-Type" :"multipart/form-data" } })
+        api.post('devices', { ...data, file }, { headers: { authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } })
             .then(res => {
                 toast.fire({ icon: 'success', padding: '10px 20px', title: "Qo'shildi!" });
             })
@@ -50,6 +69,26 @@ const AddDevice = () => {
             });
     };
 
+    const check = () => {
+        data.serie &&
+            axios(`http://livewater.uz:1880/test?serie=${data?.serie}`).then(res => {
+                toast.fire({
+                    icon: 'success',
+                    iconColor: 'yellow',
+                    title: `${res.data} ushbu seriyali qurilmaga jo'natildi`,
+                    padding: '10px 20px'
+                });
+
+            });
+            setTimeout(() => {
+                isWorking &&
+                    toast.fire({
+                        icon: 'error',
+                        title: 'Ishlamayapti!',
+                        padding: '10px 20px'
+                    });
+            }, 5000);
+    };
     return (
         <div>
             <ul className='flex space-x-2 rtl:space-x-reverse'>
@@ -157,8 +196,11 @@ const AddDevice = () => {
                                 />
                             </div>
                         </div>
+                        <button onClick={check} type='button' className='btn   btn-outline-primary  absolute  right-36 mt-4'>
+                            Tekshirish
+                        </button>
 
-                        <button type='submit' className='btn   btn-outline-primary  absolute  right-5 mt-4'>
+                        <button type='submit' className='btn   btn-outline-primary  absolute  right-12 mt-4'>
                             Saqlash
                         </button>
                     </div>

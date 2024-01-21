@@ -10,7 +10,6 @@ import { getDateFromTimestamp, getHourAndMinutesFromTimestamp } from '../utils/u
 const Index = () => {
     const [baseData, setBaseData] = useState<EventFace[]>([]);
     const [stat, setStat] = useState<{ total: number; good: number; bad: number }>({ total: 0, good: 0, bad: 0 });
-    const [loading, setLoading] = useState(false);
     const { token } = useSelector((state: IRootState) => state.data);
 
     const dispatch = useDispatch();
@@ -18,9 +17,9 @@ const Index = () => {
         dispatch(setPageTitle('Asosiy sahifa'));
         api('basedata?page[limit]=50' ,  { headers: { authorization: `Bearer ${token}` } }).then(res => {
             const { data } = res.data;
-            const last_updated = data.filter((el: EventFace) => el?.date_in_ms === data[0].date_in_ms);
-            const bad = last_updated.filter((el: EventFace) => el.signal === 'nosignal');
-            const good = last_updated.filter((el: EventFace) => el.signal === 'good');
+            const last_updated = data.filter((el: EventFace) => el?.date_in_ms === data[0]?.date_in_ms);
+            const bad = last_updated.filter((el: EventFace) => el?.signal === 'nosignal');
+            const good = last_updated.filter((el: EventFace) => el?.signal === 'good');
             setStat({ total: last_updated.length, good: good.length, bad: bad.length });
             setBaseData(last_updated);
         });
@@ -85,7 +84,7 @@ const Index = () => {
                                     <td className=' '>
                                         <div className='whitespace-nowrap    flex items-center gap-2'>
                                             {' '}
-                                            {data.signal ? <GreenDot /> : <RedDot />} {data.signal ? 'Yaxshi' : "Signal yo'q"}{' '}
+                                            {data.signal === "good" ? <GreenDot /> : <RedDot />} {data.signal === "good" ? 'Yaxshi' : "Signal yo'q"}{' '}
                                         </div>
                                     </td>
                                 </tr>
