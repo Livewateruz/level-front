@@ -1,33 +1,26 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import MaskedInput from 'react-text-mask';
+import Swal from 'sweetalert2';
 import { IRootState } from '../../store';
 import { RegionFace, UserFace } from '../../types';
 import { api } from '../../utils/api';
 import getData from '../../utils/getData';
 import { toast } from '../../utils/toast';
-import axios from 'axios';
+import { Miniloader } from '../Component/Miniloader';
 
 const AddDevice = () => {
     const navigate = useNavigate();
     const [data, setData] = useState<{ serie: string }>({ serie: '' });
-    const { token, user } = useSelector((state: IRootState) => state.data);
-
-    const dispatch = useDispatch();
+    const { token,  } = useSelector((state: IRootState) => state.data);
     const [regions, setRegions] = useState<{ data: RegionFace[] }>({ data: [] });
     const [isWorking, setWorking] = useState<boolean>(false);
     const [users, setUsers] = useState<{ data: UserFace[] }>({ data: [] });
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<"creating" | "checking" | "noaction">("noaction");
     const [file, setFile] = useState<File | null>(null);
     useEffect(() => {
-        // Replace 'wss://your-websocket-server.com' with your WebSocket server URL
-        const socket = new WebSocket('ws://livewater.uz:1880/modem');
-
-        // Connection opened
-        socket.addEventListener('open', event => {});
-
-        // Listen for messages
+        const socket = new WebSocket('wss://livewater.uz:1880/modem');
         socket.addEventListener('message', event => {
             setWorking(true);
             toast.fire({
@@ -35,13 +28,15 @@ const AddDevice = () => {
                 title: 'Qurilma ishlayapti',
                 padding: '10px 20px'
             });
-            // Handle the received message as needed
+            setLoading("noaction")
         });
-
-        // Connection closed
-        socket.addEventListener('close', event => {});
-
-        // Clean up the WebSocket connection when the component unmounts
+        socket.addEventListener('close', event => {
+            toast.fire({
+                icon: 'error',
+                title: 'Socket bilan boglanish yuq',
+                padding: '10px 20px'
+            });
+        });
         return () => {
             socket.close();
         };
@@ -60,16 +55,34 @@ const AddDevice = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        api.post('devices', { ...data, file }, { headers: { authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } })
-            .then(res => {
-                toast.fire({ icon: 'success', padding: '10px 20px', title: "Qo'shildi!" });
-            })
-            .catch(err => {
-                toast.fire({ icon: 'error', padding: '10px 20px', title: err.message });
-            });
+        Swal.fire({
+            icon: 'warning',
+            title: "Qurilma qo'shiladi?",
+            text: "Qurilmani qo'shishga ishon komil qiling!",
+            showCancelButton: true,
+            confirmButtonText: 'Davom etish',
+            cancelButtonText: 'Bekor qilish',
+            padding: '2em',
+            customClass: 'sweet-alerts'
+        }).then(result => {
+            if (result.isConfirmed) {
+                setLoading("creating")
+                api.post('devices', { ...data, file }, { headers: { authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } })
+                    .then(_ => {
+                        toast.fire({ icon: 'success', padding: '10px 20px', title: "Qo'shildi!" });
+                        navigate(-1);
+                    })
+                    .catch(err => {
+                        toast.fire({ icon: 'error', padding: '10px 20px', title: err.response?.data.msg || err.message });
+                    }).finally(()=>{
+                        setLoading("noaction")
+                    });
+            }
+        });
     };
 
     const check = () => {
+        setLoading("checking")
         data.serie &&
             axios(`http://livewater.uz:1880/test?serie=${data?.serie}`).then(res => {
                 toast.fire({
@@ -80,14 +93,15 @@ const AddDevice = () => {
                 });
 
             });
-            setTimeout(() => {
-                isWorking &&
-                    toast.fire({
-                        icon: 'error',
-                        title: 'Ishlamayapti!',
-                        padding: '10px 20px'
-                    });
-            }, 5000);
+        setTimeout(() => {
+            isWorking &&
+                toast.fire({
+                    icon: 'error',
+                    title: 'Ishlamayapti!',
+                    padding: '10px 20px'
+                });
+                setLoading("noaction")
+        }, 5000);
     };
     return (
         <div>
@@ -127,11 +141,13 @@ const AddDevice = () => {
                             </label>
                             <div className=' font-semibold text-lg bg-black dark:bg-black-dark-light'>
                                 <select required className='form-input lg:w-[270px] w-2/4' onChange={e => handleChange(e)} name='region' id='region'>
-                                    <option disabled selected value=''>
+                                    <option selected value={''}>
                                         Hududni tanlang
                                     </option>
                                     {regions.data.map((r, i) => (
-                                        <option value={r._id}>{r.name}</option>
+                                        <option key={i} value={r._id}>
+                                            {r.name}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
@@ -162,11 +178,13 @@ const AddDevice = () => {
                             </label>
                             <div className=' font-semibold text-lg bg-black dark:bg-black-dark-light'>
                                 <select required className='form-input lg:w-[270px] w-2/4' onChange={e => handleChange(e)} name='owner' id='owner'>
-                                    <option disabled selected value=''>
+                                    <option key={'rtyui'} disabled selected defaultValue=''>
                                         Foydalanuvchini tanlang
                                     </option>
                                     {users.data.map((r, i) => (
-                                        <option value={r._id}>{r.first_name + ' ' + r.last_name}</option>
+                                        <option key={i} value={r._id}>
+                                            {r.first_name + ' ' + r.last_name}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
@@ -196,31 +214,16 @@ const AddDevice = () => {
                                 />
                             </div>
                         </div>
-                        <button onClick={check} type='button' className='btn   btn-outline-primary  absolute  right-36 mt-4'>
-                            Tekshirish
+                        <div className='flex justify-between mt-10'>
+                        <button onClick={check} disabled={loading !== "noaction"} type='button' className='btn   btn-outline-primary'>
+                            Tekshirish {loading === "checking" && <Miniloader/>}
                         </button>
-
-                        <button type='submit' className='btn   btn-outline-primary  absolute  right-12 mt-4'>
-                            Saqlash
+                        <button type='submit' disabled={loading !== "noaction"} className='btn   btn-outline-primary  '>
+                            Saqlash {loading === "creating" && <Miniloader/>}
                         </button>
+                        </div>
                     </div>
                 </form>
-            </div>
-            <div className='full mt-5 '>
-                {/* <YMaps>
-            <Map
-              width={"100%"}
-              defaultState={{
-                center: [device!.lat, device!.lng],
-                zoom: 12,
-              }}
-            >
-              <ZoomControl />
-              <FullscreenControl />
-              <GeolocationControl options={{ float: "left" }} />
-              <Placemark geometry={[device!.lat, device!.lng]} />
-            </Map>
-          </YMaps> */}
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { toast } from './toast';
 export const api = axios.create({
-    baseURL: `https://back2.livewater.uz`,
+    baseURL: `http://localhost:4001`,
     headers: { 'Content-type': 'application/json' }
 });
 
