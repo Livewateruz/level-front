@@ -20,7 +20,7 @@ const AddDevice = () => {
     const [loading, setLoading] = useState<"creating" | "checking" | "noaction">("noaction");
     const [file, setFile] = useState<File | null>(null);
     useEffect(() => {
-        const socket = new WebSocket('ws://livewater.uz:1880/modem');
+        const socket = new WebSocket('wss://livewater.uz:1880/modem');
         socket.addEventListener('open', event => {
             toast.fire({
                 icon: 'success',
