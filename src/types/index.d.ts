@@ -4,11 +4,18 @@ export interface DevicesFace {
     lat: number;
     long: number;
     serie: string;
+    name: string ;
     device_privet_key: string;
     date: number;
     owner: UserFace;
     created_at: string;
     updated_at: string;
+}
+export interface ResponseData <T>{
+    total : number;
+    offset : number;
+    limit : number;
+    data : T[];
 }
 export interface DevicesFaceOpt {
     _id?: string;
@@ -16,12 +23,14 @@ export interface DevicesFaceOpt {
     lat?: number;
     long?: number;
     serie?: string;
+    name?: string ;
     device_privet_key?: string;
     date?: number;
     owner?: string;
     created_at?: string;
     updated_at?: string;
 }
+
 export interface UserFace {
     _id: string;
     first_name: string;
@@ -67,6 +76,7 @@ export interface EventFaceHandelExel {
     signal: 'good' | 'nosignal';
     date_in_ms: number;
     serie : string ;
+    name: string ;
 }
 export interface ServerdataFace {
     [key: string]: string | number | boolean;

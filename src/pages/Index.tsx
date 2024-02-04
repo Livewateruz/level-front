@@ -15,13 +15,14 @@ const Index = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(setPageTitle('Asosiy sahifa'));
-        api('basedata?page[limit]=50' ,  { headers: { authorization: `Bearer ${token}` } }).then(res => {
-            const { data } = res.data;
-            const last_updated = data.filter((el: EventFace) => el?.date_in_ms === data[0]?.date_in_ms);
-            const bad = last_updated.filter((el: EventFace) => el?.signal === 'nosignal');
-            const good = last_updated.filter((el: EventFace) => el?.signal === 'good');
-            setStat({ total: last_updated.length, good: good.length, bad: bad.length });
-            setBaseData(last_updated);
+        api('basedata/last-updated?page[limit]=50' ,  { headers: { authorization: `Bearer ${token}` } }).then(res => {
+            const { data } = res;
+            console.log(data);
+            // const last_updated = data.filter((el: EventFace) => el?.date_in_ms === data[0]?.date_in_ms);
+            const bad = data.filter((el: EventFace) => el?.signal === 'nosignal');
+            const good = data.filter((el: EventFace) => el?.signal === 'good');
+            setStat({ total: data.length, good: good.length, bad: bad.length });
+            setBaseData(data);
         });
     }, []);
     return (
@@ -49,6 +50,7 @@ const Index = () => {
                         <tr>
                             <th className='text-center'>#</th>
                             <th className='text-center'>Seriya</th>
+                            <th className='text-center'>Obyekt nomi</th>
                             <th className='text-center'>Suv satxi(sm)</th>
                             <th className='text-center'>Hajm(m³/s)</th>
                             <th className='text-center'>Bosim (kPa)</th>
@@ -61,27 +63,30 @@ const Index = () => {
                         {baseData?.map((data, i) => {
                             return (
                                 <tr key={data._id}>
-                                    <td className=' '>{i + 1}</td>
-                                    <td className=' '>
+                                           <td>{((i+1))}</td>
+                                    <td className='whitespace-nowrap'>
                                         <div className='whitespace-nowrap'>{data?.device?.serie}</div>
                                     </td>
-                                    <td className=' '>
+                                    <td>
+                                                <div className='whitespace-nowrap text-xs'>{data?.device?.name}</div>
+                                            </td>
+                                    <td className='whitespace-nowrap'>
                                         <div className='whitespace-nowrap'>{data?.level}</div>
                                     </td>
-                                    <td className=' '>
+                                    <td className='whitespace-nowrap'>
                                         <div className='whitespace-nowrap'>{data?.volume}</div>
                                     </td>
-                                    <td className=' '>
+                                    <td className='whitespace-nowrap'>
                                         <div className='whitespace-nowrap'>{data?.pressure}</div>
                                     </td>
 
-                                    <td className=' '>
+                                    <td className='whitespace-nowrap'>
                                         <div className='whitespace-nowrap  '>{getHourAndMinutesFromTimestamp(data?.date_in_ms || 0)}</div>
                                     </td>
-                                    <td className=' '>
+                                    <td className='whitespace-nowrap'>
                                         <div className='whitespace-nowrap  '>{getDateFromTimestamp(data?.date_in_ms || 0)}</div>
                                     </td>
-                                    <td className=' '>
+                                    <td className='whitespace-nowrap'>
                                         <div className='whitespace-nowrap    flex items-center gap-2'>
                                             {' '}
                                             {data.signal === "good" ? <GreenDot /> : <RedDot />} {data.signal === "good" ? 'Yaxshi' : "Signal yo'q"}{' '}

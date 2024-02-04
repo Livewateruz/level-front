@@ -1,7 +1,9 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { toast } from './toast';
+const local = `http://localhost:4001`
+const server = `https://back2.livewater.uz`
 export const api = axios.create({
-    baseURL: `https://back2.livewater.uz`,
+    baseURL: local,
     headers: { 'Content-type': 'application/json' }
 });
 
@@ -16,7 +18,7 @@ export const deleteItem = (url: string, header: AxiosRequestConfig<any>) => {
         });
     }).catch((err)=>{
         toast.fire({
-            text: err.message || "Xatolik",
+            text: err.response.data.msg || err.message ,
             toast: true,
             position: 'top-end',
             timer: 3000,

@@ -27,7 +27,7 @@ const PreviewDevice = () => {
         socket.addEventListener('open', event => {
             toast.fire({
                 icon: 'success',
-                title: 'Socket bilan nglanfi',
+                title: 'Socket bilan bog\'landi',
                 padding: '10px 20px'
             });
         });
@@ -43,7 +43,7 @@ const PreviewDevice = () => {
         socket.addEventListener('close', event => {
             toast.fire({
                 icon: 'error',
-                title: 'Socket bilan boglanish yuq',
+                title: 'Socket bilan bog\'lanish yuq',
                 padding: '10px 20px'
             });
         });
@@ -168,6 +168,12 @@ const PreviewDevice = () => {
             <div className='flex justify-between  flex-wrap w-full  mt-5'>
                 <form onSubmit={e => handleSubmit(e)} className=' flex justify-between gap-32 px-10  w-full '>
                     <div className='mb-6  w-1/2'>
+                    <div className='flex items-center mt-4'>
+                            <label htmlFor='name' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
+                            Obyekt nomi
+                            </label>
+                            <input defaultValue={data.name} required onChange={e => handleChange(e)} id='name' type='text' name='name' className='form-input lg:w-[270px] w-2/3' placeholder='123' />
+                        </div>
                         <div className='flex items-center mt-4'>
                             <label htmlFor='number' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
                                 Qurilma seriyasi

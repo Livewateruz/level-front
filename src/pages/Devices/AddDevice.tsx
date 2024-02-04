@@ -22,7 +22,7 @@ const AddDevice = () => {
     useEffect(() => {
         const socket = new WebSocket('wss://livewater.uz:1880/modem');
         socket.addEventListener('open', event => {
-            toast.fire({
+            toast.fire({ 
                 icon: 'success',
                 title: 'Socket bilan nglanfi',
                 padding: '10px 20px'
@@ -131,12 +131,19 @@ const AddDevice = () => {
             <div className='flex justify-between  flex-wrap w-full  mt-5'>
                 <form onSubmit={e => handleSubmit(e)} className=' flex justify-between gap-32 px-10  w-full '>
                     <div className='mb-6  w-1/2'>
+                         <div className='flex items-center mt-4'>
+                            <label htmlFor='name' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
+                            Obyekt nomi
+                            </label>
+                            <input required onChange={e => handleChange(e)} id='name' type='text' name='name' className='form-input lg:w-[270px] w-2/3' placeholder='123' />
+                        </div>
                         <div className='flex items-center mt-4'>
                             <label htmlFor='number' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
                                 Qurilma seriyasi
                             </label>
                             <input required onChange={e => handleChange(e)} id='number' type='text' name='serie' className='form-input lg:w-[270px] w-2/3' placeholder='864333048092134' />
                         </div>
+                       
                         <div className='flex items-center mt-4'>
                             <label htmlFor='private_key' className='flex-1 ltr:mr-2 rtl:ml-2 mb-0'>
                                 Qurilma maxfiy kodi

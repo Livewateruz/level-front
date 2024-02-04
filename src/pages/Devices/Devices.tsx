@@ -65,11 +65,29 @@ function Devices () {
                             records={devices.data}
                             columns={[
                                 {
+                                    accessor: 'T/r',
+                                    sortable: false,
+                                    render: ({ _id } , i) => (
+                                        <span key={_id}>
+                                            <div className='text-primary underline hover:no-underline font-semibold'>{`${(i+1)*(devices.offset +1)}`}</div>
+                                        </span>
+                                    )
+                                },
+                                {
                                     accessor: 'Id',
                                     sortable: false,
                                     render: ({ _id }) => (
                                         <span key={_id}>
                                             <div className='text-primary underline hover:no-underline font-semibold'>{`${_id}`}</div>
+                                        </span>
+                                    )
+                                },
+                                {
+                                    accessor: 'obyekt nomi',
+                                    sortable: false,
+                                    render: ({ name, _id }) => (
+                                        <span>
+                                            <div className='text-primary underline hover:no-underline font-semibold'>{`${name}`}</div>
                                         </span>
                                     )
                                 },
