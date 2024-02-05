@@ -17,12 +17,11 @@ const Index = () => {
         dispatch(setPageTitle('Asosiy sahifa'));
         api('basedata/last-updated?page[limit]=50' ,  { headers: { authorization: `Bearer ${token}` } }).then(res => {
             const { data } = res;
-            console.log(data);
-            // const last_updated = data.filter((el: EventFace) => el?.date_in_ms === data[0]?.date_in_ms);
-            const bad = data.filter((el: EventFace) => el?.signal === 'nosignal');
-            const good = data.filter((el: EventFace) => el?.signal === 'good');
-            setStat({ total: data.length, good: good.length, bad: bad.length });
-            setBaseData(data);
+            const last_updated = data.filter((el: EventFace) => el?.date_in_ms === data[0]?.date_in_ms);
+            const bad = last_updated.filter((el: EventFace) => el?.signal === 'nosignal');
+            const good = last_updated.filter((el: EventFace) => el?.signal === 'good');
+            setStat({ total: last_updated.length, good: good.length, bad: bad.length });
+            setBaseData(last_updated);
         });
     }, []);
     return (
