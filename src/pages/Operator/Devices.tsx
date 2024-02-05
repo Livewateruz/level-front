@@ -56,6 +56,15 @@ function UserDevices () {
                             records={devices.data}
                             columns={[
                                 {
+                                    accessor: 'N',
+                                    sortable: false,
+                                    render: ({ _id } ,i) => (
+                                        <span>
+                                            <div className='text-primary underline hover:no-underline font-semibold'>{((devices.limit *  devices.offset) + (i+1))}</div>
+                                        </span>
+                                    )
+                                },
+                                {
                                     accessor: 'Id',
                                     sortable: false,
                                     render: ({ _id }) => (
@@ -65,11 +74,20 @@ function UserDevices () {
                                     )
                                 },
                                 {
-                                    accessor: 'seriya',
+                                    accessor: 'Seriya',
                                     sortable: false,
                                     render: ({ serie, _id }) => (
                                         <span>
                                             <div className='text-primary underline hover:no-underline font-semibold'>{`${serie}`}</div>
+                                        </span>
+                                    )
+                                },
+                                {
+                                    accessor: 'Obyekt nomi',
+                                    sortable: false,
+                                    render: ({ name }) => (
+                                        <span>
+                                            <div className='font-semibold'>{`${name}`}</div>
                                         </span>
                                     )
                                 },
@@ -85,7 +103,7 @@ function UserDevices () {
                                 {
                                     accessor: 'Egasi',
                                     sortable: false,
-                                    render: ({ owner }) => <div className='whitespace-nowrap flex items-center gap-2'>{user.first_name + ' ' + user.last_name}</div>
+                                    render: ({  }) => <div className='whitespace-nowrap flex items-center gap-2'>{user.first_name + ' ' + user.last_name}</div>
                                 }
                             ]}
                             highlightOnHover

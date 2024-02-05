@@ -15,7 +15,6 @@ function Devices () {
         dispatch(setPageTitle('Qurilmalar ruyxati'));
     });
     const isDark = useSelector((state: IRootState) => state.themeConfig.theme) === 'dark' ? true : false;
-
     const [page, setPage] = useState(1);
     const PAGE_SIZES = [10, 20, 30, 50, 100];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
@@ -58,18 +57,17 @@ function Devices () {
                             </Link>
                         </div>
                     </div>
-
                     <div className='datatables pagination-padding'>
                         <DataTable
                             className={`${isDark} whitespace-nowrap table-hover`}
                             records={devices.data}
                             columns={[
                                 {
-                                    accessor: 'T/r',
+                                    accessor: 'N',
                                     sortable: false,
                                     render: ({ _id } , i) => (
                                         <span key={_id}>
-                                            <div className='text-primary underline hover:no-underline font-semibold'>{`${(i+1)*(devices.offset +1)}`}</div>
+                                            <div className='text-primary underline hover:no-underline font-semibold'>{((devices.limit *  devices.offset) + (i+1))}</div>
                                         </span>
                                     )
                                 },

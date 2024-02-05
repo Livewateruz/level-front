@@ -44,7 +44,7 @@ function Events () {
     }, [data?.region]);
     useEffect(() => {
         getData({
-            url: `/basedata?page[limit]=${3}&page[offset]=${page}&${from ? `filter[start]=${from}` : ''}&${to ? `filter[end]=${to}` : ''}&${device ? `filter[device]=${device}` : ''}&${
+            url: `/basedata?page[offset]=${page}&${from ? `filter[start]=${from}` : ''}&${to ? `filter[end]=${to}` : ''}&${device ? `filter[device]=${device}` : ''}&${
                 data?.region ? `filter[region]=${data?.region}` : ''
             }`,
             setData: setEvents,
@@ -173,7 +173,7 @@ function Events () {
                     </div>
                 </div>
                 <div className='flex flex-row items-stretch gap-5 '>
-                    <form onSubmit={e => filter(e)} className='flex flex-col items-center    gap-3  w-[18%]'>
+                    <form onSubmit={e => filter(e)} className='flex flex-col items-start    gap-3  w-[18%]'>
                         <Flatpickr
                             options={{
                                 mode: 'range',
