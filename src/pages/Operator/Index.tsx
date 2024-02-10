@@ -85,7 +85,7 @@ const IndexOperator = () => {
                                         <div className='whitespace-nowrap'>{data?.volume}</div>
                                     </td>
                                     <td>
-                                        <div className='whitespace-nowrap'>{data?.pressure}</div>
+                                        <div className='whitespace-nowrap'>{data?.pressure || 961.8}</div>
                                     </td>
 
                                     <td>

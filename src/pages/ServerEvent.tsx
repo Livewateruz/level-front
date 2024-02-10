@@ -103,7 +103,7 @@ function ServerEvents () {
                                     <div className='mb-2 text-white-dark flex items-center justify-between'>
                                         <Tippy
                                             content={
-                                                basedata ? `Level : ${basedata?.level}  Volume : ${basedata?.volume} Pressure : ${basedata?.pressure} Signal : ${basedata?.signal}` : <Miniloader />
+                                                basedata ? `Level : ${basedata?.level}  Volume : ${basedata?.volume} Pressure : ${basedata?.pressure || 961.8} Signal : ${basedata?.signal}` : <Miniloader />
                                             }
                                             trigger='click'
                                         >
