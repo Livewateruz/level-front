@@ -46,9 +46,7 @@ const Header = () => {
     const { t } = useTranslation();
     function sighout (){
      Cookies.remove('passport')
-    navigate('/')
-     
-     window.location.reload()
+    navigate('/login')
     }
     return (
         <header className={themeConfig.semidark && themeConfig.menu === 'horizontal' ? 'dark' : ''}>

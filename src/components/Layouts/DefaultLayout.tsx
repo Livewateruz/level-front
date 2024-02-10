@@ -11,6 +11,7 @@ import Portals from '../../components/Portals';
 import { api } from '../../utils/api';
 import { setRole, setToken, setUser } from '../../store/dataConfigSlice';
 import { toast } from '../../utils/toast';
+import { useNavigate } from 'react-router-dom';
 
 const DefaultLayout = ({ children }: PropsWithChildren) => {
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
@@ -23,7 +24,7 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     };
-
+    const navigate = useNavigate();
     const onScrollHandler = () => {
         if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
             setShowTopButton(true);
@@ -34,31 +35,29 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
 
     useEffect(() => {
         window.addEventListener('scroll', onScrollHandler);
-        api('auth', { headers: { authorization: `Bearer ${token}` } })
-            .then(res => {
-                if (res.status === 200) {
-                    dispatch(setUser({ user: res?.data?.data }));
-                    dispatch(setRole({ role: res?.data?.role || "nouser" }));
-                    setShowLoader(false);
-                } else {
+        if (token) {
+            api('auth', { headers: { authorization: `Bearer ${token}` } })
+                .then(res => {
+                    if (res.status === 200) {
+                        dispatch(setUser({ user: res?.data?.data }));
+                        dispatch(setRole({ role: res?.data?.role || 'nouser' }));
+                        setShowLoader(false);
+                    } else {
+                        
+                    }
+                })
+                .catch(err => {
                     toast.fire({
                         icon: 'error',
                         title: 'Token eskirgan, qayta kiring',
                         padding: '10px 20px'
                     });
                     setShowLoader(false);
-                    dispatch(setToken({ token: false }));
-                }
-            })
-            .catch(err => {
-                toast.fire({
-                    icon: 'error',
-                    title: 'Token eskirgan, qayta kiring',
-                    padding: '10px 20px'
+                    navigate('/login');
                 });
-                setShowLoader(false);
-                dispatch(setToken({ token: false }));
-            });
+        } else {
+            navigate('/login');
+        }
         const screenLoader = document.getElementsByClassName('screen_loader');
         if (screenLoader?.length) {
             screenLoader[0].classList.add('animate__fadeOut');

@@ -56,7 +56,7 @@ function UserDevices () {
                             records={devices.data}
                             columns={[
                                 {
-                                    accessor: 'N',
+                                    accessor: 'Tartib',
                                     sortable: false,
                                     render: ({ _id } ,i) => (
                                         <span>
@@ -69,7 +69,7 @@ function UserDevices () {
                                     sortable: false,
                                     render: ({ _id }) => (
                                         <span>
-                                            <div className='text-primary underline hover:no-underline font-semibold'>{`${_id}`}</div>
+                                            <div>{`${_id}`}</div>
                                         </span>
                                     )
                                 },
@@ -78,7 +78,7 @@ function UserDevices () {
                                     sortable: false,
                                     render: ({ serie, _id }) => (
                                         <span>
-                                            <div className='text-primary underline hover:no-underline font-semibold'>{`${serie}`}</div>
+                                            <div >{`${serie}`}</div>
                                         </span>
                                     )
                                 },

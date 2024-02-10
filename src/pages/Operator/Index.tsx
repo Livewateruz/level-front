@@ -6,6 +6,7 @@ import { setPageTitle } from '../../store/themeConfigSlice';
 import { EventFace } from '../../types';
 import { api } from '../../utils/api';
 import { getDateFromTimestamp, getHourAndMinutesFromTimestamp } from '../../utils/utils';
+import { toast } from '../../utils/toast';
 
 const IndexOperator = () => {
     const [baseData, setBaseData] = useState<EventFace[]>([]);
@@ -16,13 +17,20 @@ const IndexOperator = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(setPageTitle('Asosiy sahifa'));
-        api('basedata/operator?page[limit]=50', { headers: { authorization: `Bearer ${token}` } }).then(res => {
-            const { data } = res.data;
-            const last_updated = data.filter((el: EventFace) => el?.date_in_ms === data[0].date_in_ms);
-            const bad = last_updated.filter((el: EventFace) => el.signal === 'nosignal');
-            const good = last_updated.filter((el: EventFace) => el.signal === 'good');
-            setStat({ total: last_updated.length, good: good.length, bad: bad.length });
-            setBaseData(last_updated);
+        api('basedata/opr/lastadded', { headers: { authorization: `Bearer ${token}` } }).then(res => {
+            const { data } = res;
+            const bad = data.filter((el: EventFace) => el.signal === 'nosignal');
+            const good = data.filter((el: EventFace) => el.signal === 'good');
+            setStat({ total: data.length, good: good.length, bad: bad.length });
+            setBaseData(data);
+        }).catch((err)=>{
+            toast.fire({
+                text: err.response.data.msg || "Xatolik ",
+                toast: true,
+                position: 'top-end',
+                timer: 3000,
+                timerProgressBar: true
+            });
         });
     }, []);
     return (
