@@ -117,14 +117,14 @@ const PreviewUser = () => {
                                 Foydalanuvchi mobil raqami
                             </label>
                             <MaskedInput
-                            value={user.mobile_phone}
+                            value={user.mobil_phone}
                             onChange={e => handleChange(e)}
                             id='phoneMask'
                             type='text'
-                            placeholder='Mobile nomer'
+                            placeholder='Mobil nomer'
                             className='form-input flex-1'
                             defaultValue={'998'}
-                            name='mobile_phone'
+                            name='mobil_phone'
                             mask={[ /[0-9]/, /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/]}
                         />
                         </div>
@@ -155,7 +155,7 @@ const PreviewUser = () => {
                             <label htmlFor='horizontalPassword' className='mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2'>
                                 Parol
                             </label>
-                            <input id='horizontalPassword' type='password' placeholder='Parolni kiriting' className='form-input flex-1' />
+                            <input id='horizontalPassword' type='text' placeholder='Parolni kiriting' className='form-input flex-1' />
                         </div>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import { api } from '../../utils/api';
 import { RegionFace, UserFace } from '../../types';
 import { Miniloader } from '../Component/Miniloader';
 import { toast } from '../../utils/toast';
+import MaskedInput from 'react-text-mask';
 
 const AddUser = () => {
     const [user, setUser] = useState<UserFace>();
@@ -98,14 +99,16 @@ const AddUser = () => {
                             <label htmlFor='horizontalUsername' className='mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2'>
                                 Foydalanuvchi mobil raqami
                             </label>
-                            <input
-                                name='mobile_phone'
-                                onChange={e => handleChange(e)}
-                                id='horizontalUsername'
-                                type='text'
-                                placeholder='Foydalanuvchi mobil raqamini kiriting'
-                                className='form-input flex-1'
-                            />
+                            <MaskedInput
+                            onChange={e => handleChange(e)}
+                            id='phoneMask'
+                            type='text'
+                            placeholder='Mobil nomer'
+                            className='form-input flex-1'
+                            defaultValue={'998'}
+                            name='mobil_phone'
+                            mask={[ /[0-9]/, /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/]}
+                        />
                         </div>
                     </div>
                     <div className='flex flex-col w-1/2 gap-4'>
@@ -134,7 +137,7 @@ const AddUser = () => {
                             <label htmlFor='horizontalPassword' className='mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2'>
                                 Parol
                             </label>
-                            <input onChange={e => handleChange(e)} id='horizontalPassword' name='password' type='password' placeholder='Parolni kiriting' className='form-input flex-1' />
+                            <input onChange={e => handleChange(e)} id='horizontalPassword' name='password' type='text' placeholder='Parolni kiriting' className='form-input flex-1' />
                         </div>
                     </div>
                 </div>

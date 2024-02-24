@@ -37,7 +37,7 @@ export interface UserFace {
     first_name: string;
     last_name: string;
     username: string;
-    mobile_phone: string;
+    mobil_phone: string;
     role: string;
     region: string;
     devices :DevicesFace[]
@@ -49,7 +49,7 @@ export interface UserFaceOpt {
     first_name?: string;
     last_name?: string;
     username?: string;
-    mobile_phone?: string;
+    mobil_phone?: string;
     role?: string;
     region?: string;
     created_at?: string;
