@@ -8,6 +8,7 @@ export interface DevicesFace {
     device_privet_key: string;
     date: number;
     owner: UserFace;
+    isWorking : boolean;
     created_at: string;
     updated_at: string;
 }
@@ -36,6 +37,7 @@ export interface UserFace {
     first_name: string;
     last_name: string;
     username: string;
+    mobile_phone: string;
     role: string;
     region: string;
     devices :DevicesFace[]
@@ -47,6 +49,7 @@ export interface UserFaceOpt {
     first_name?: string;
     last_name?: string;
     username?: string;
+    mobile_phone?: string;
     role?: string;
     region?: string;
     created_at?: string;

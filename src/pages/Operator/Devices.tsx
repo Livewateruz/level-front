@@ -6,6 +6,7 @@ import { IRootState } from '../../store';
 import { setPageTitle } from '../../store/themeConfigSlice';
 import { DevicesFace } from '../../types';
 import getData from '../../utils/getData';
+import { GreenDot, RedDot } from '../../../public/assets/svgs';
 function UserDevices () {
     const [devices, setDevices] = useState<{ total: number; offset: number; data: DevicesFace[]; limit: number }>({ data: [], limit: 0, offset: 0, total: 0 });
     const [loading, setLoading] = useState<boolean>(false);
@@ -85,9 +86,9 @@ function UserDevices () {
                                 {
                                     accessor: 'Obyekt nomi',
                                     sortable: false,
-                                    render: ({ name }) => (
+                                    render: ({  }) => (
                                         <span>
-                                            <div className='font-semibold'>{`${name}`}</div>
+                                            <div className='font-semibold'>{`${ ""}`}</div>
                                         </span>
                                     )
                                 },
@@ -104,7 +105,12 @@ function UserDevices () {
                                     accessor: 'Egasi',
                                     sortable: false,
                                     render: ({  }) => <div className='whitespace-nowrap flex items-center gap-2'>{user.first_name + ' ' + user.last_name}</div>
-                                }
+                                },
+                                {
+                                    accessor: 'Status',
+                                    sortable: false,
+                                    render: ({ isWorking }) => <div className='whitespace-nowrap flex items-center gap-2'>{isWorking ? <><GreenDot/>Qurilma ishlayapti</>:<><RedDot/>Aloqa yo'q</>}</div>
+                                },
                             ]}
                             highlightOnHover
                             totalRecords={devices.total}

@@ -6,6 +6,7 @@ import { RegionFace, UserFaceOpt } from '../../types';
 import { api, deleteItem } from '../../utils/api';
 import { toast } from '../../utils/toast';
 import { Miniloader } from '../Component/Miniloader';
+import MaskedInput from 'react-text-mask';
 
 const PreviewUser = () => {
     const { id } = useParams();
@@ -110,6 +111,22 @@ const PreviewUser = () => {
                                 placeholder=' Foydalanuvchi nomi kiriting'
                                 className='form-input flex-1'
                             />
+                        </div>
+                        <div className='flex sm:flex-row flex-col'>
+                            <label htmlFor='horizontalUsername' className='mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2'>
+                                Foydalanuvchi mobil raqami
+                            </label>
+                            <MaskedInput
+                            value={user.mobile_phone}
+                            onChange={e => handleChange(e)}
+                            id='phoneMask'
+                            type='text'
+                            placeholder='Mobile nomer'
+                            className='form-input flex-1'
+                            defaultValue={'998'}
+                            name='mobile_phone'
+                            mask={[ /[0-9]/, /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/]}
+                        />
                         </div>
                     </div>
                     <div className='flex flex-col w-1/2 gap-4'>

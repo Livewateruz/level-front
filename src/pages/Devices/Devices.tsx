@@ -7,6 +7,7 @@ import { setPageTitle } from '../../store/themeConfigSlice';
 import { DevicesFace } from '../../types';
 import getData from '../../utils/getData';
 import { _CardSection } from '@mantine/core/lib/Card/CardSection/CardSection';
+import { GreenDot, RedDot } from '../../../public/assets/svgs';
 function Devices () {
     const [devices, setDevices] = useState<{ total: number; offset: number; data: DevicesFace[]; limit: number }>({ data: [], limit: 0, offset: 0, total: 0 });
     const [loading, setLoading] = useState<boolean>(false);
@@ -103,7 +104,7 @@ function Devices () {
                                     sortable: true,
                                     render: ({ region }) => (
                                         <div className='flex items-center font-semibold'>
-                                            <div>{region.name}</div>
+                                            <div>{region?.name}</div>
                                         </div>
                                     )
                                 },
@@ -112,6 +113,11 @@ function Devices () {
                                     accessor: 'Egasi',
                                     sortable: false,
                                     render: ({ owner }) => <div className='whitespace-nowrap flex items-center gap-2'>{owner.first_name + ' ' + owner.last_name}</div>
+                                },
+                                {
+                                    accessor: 'Status',
+                                    sortable: false,
+                                    render: ({ isWorking }) => <div className='whitespace-nowrap flex items-center gap-2'>{isWorking ? <><GreenDot/>Qurilma ishlayapti</>:<><RedDot/>Aloqa yo'q</>}</div>
                                 },
 
                                 {

@@ -94,6 +94,19 @@ const AddUser = () => {
                                 className='form-input flex-1'
                             />
                         </div>
+                        <div className='flex sm:flex-row flex-col'>
+                            <label htmlFor='horizontalUsername' className='mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2'>
+                                Foydalanuvchi mobil raqami
+                            </label>
+                            <input
+                                name='mobile_phone'
+                                onChange={e => handleChange(e)}
+                                id='horizontalUsername'
+                                type='text'
+                                placeholder='Foydalanuvchi mobil raqamini kiriting'
+                                className='form-input flex-1'
+                            />
+                        </div>
                     </div>
                     <div className='flex flex-col w-1/2 gap-4'>
                         <div className='flex sm:flex-row flex-col'>

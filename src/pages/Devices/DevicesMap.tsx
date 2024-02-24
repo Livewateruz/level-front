@@ -60,7 +60,7 @@ function DevicesMap () {
                                         key={i}
                                         geometry={[device!.lat, device!.long]}
                                         properties={{ iconCaption: device.name }}
-                                        options={{ preset: '', iconColor: 'red' }}
+                                        options={{ preset: '', iconColor: device.isWorking ? "blue" :"red" }}
                                     />
                                 );
                             })}
