@@ -91,12 +91,7 @@ export interface ServerdataFace {
     updated_at: string;
 }
 
-export interface   {
-    data :Delivery[]
-    length: number;
-    id: null;
-    status: string;
-};
+
 export interface  Delivery {
     month: string;
     packets: number;
