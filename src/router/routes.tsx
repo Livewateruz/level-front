@@ -17,6 +17,7 @@ const Constructor = lazy(() => import('../pages/Events'));
 const ServerEvent = lazy(() => import('../pages/ServerEvent'));
 const AddModem = lazy(() => import('../pages/Devices/AddModem'));
 const Devices = lazy(() => import('../pages/Devices/Devices'));
+const Sms = lazy(() => import('../pages/SMS/Sms'));
 const DevicesMap = lazy(() => import('../pages/Devices/DevicesMap'));
 const AddDevice = lazy(() => import('../pages/Devices/AddDevice'));
 const PreviewDevice = lazy(() => import('../pages/Devices/PreviewDevice'));
@@ -65,6 +66,12 @@ const routes = [
         for: 'admin',
         layout :"" ,
         element: <Devices />
+    },
+    {
+        path: '/sms',
+        for: 'admin',
+        layout :"" ,
+        element: <Sms />
     },
     {
         path: '/device/map',
