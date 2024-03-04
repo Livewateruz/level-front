@@ -92,7 +92,7 @@ export interface ServerdataFace {
 }
 
 
-export interface  Delivery {
+export interface  Delivered {
     month: string;
     packets: number;
     sent_packets: number;

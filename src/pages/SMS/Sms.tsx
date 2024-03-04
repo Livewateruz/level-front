@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../../utils/api';
 import { AxiosResponse } from 'axios';
 import { toast } from '../../utils/toast';
-import { Delivered, Delivery } from '../../types';
+import {  Delivered } from '../../types';
 
 const Sms = () => {
     const [data, setData] = useState<{ data: { balance: number }; status: string }>();
-    const [delivered, setDelivered] = useState<Delivered>();
+    const [delivered, setDelivered] = useState<any>();
     const [loading, setLoading] = useState<'refreshing' | 'uploading' | 'updating' | 'noaction'>('noaction');
 
     const [report, setReport] = useState<{ year?: string; month?: string }>({});
@@ -120,7 +120,7 @@ const Sms = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {delivered?.data.map((data: Delivery, key) => {
+                            {delivered?.data.map((data: Delivered, key : number) => {
                                 return (
                                     <tr key={key} className=''>
                                         <td className=''>
