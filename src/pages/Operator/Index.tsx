@@ -17,21 +17,23 @@ const IndexOperator = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(setPageTitle('Asosiy sahifa'));
-        api('basedata/opr/lastadded', { headers: { authorization: `Bearer ${token}` } }).then(res => {
-            const { data } = res;
-            const bad = data.filter((el: EventFace) => el.signal === 'nosignal');
-            const good = data.filter((el: EventFace) => el.signal === 'good');
-            setStat({ total: data.length, good: good.length, bad: bad.length });
-            setBaseData(data);
-        }).catch((err)=>{
-            toast.fire({
-                text: err.response.data.msg || "Xatolik ",
-                toast: true,
-                position: 'top-end',
-                timer: 3000,
-                timerProgressBar: true
+        api('basedata/last-updated', { headers: { authorization: `Bearer ${token}` } })
+            .then(res => {
+                const { data } = res;
+                const bad = data.filter((el: EventFace) => el.signal === 'nosignal');
+                const good = data.filter((el: EventFace) => el.signal === 'good');
+                setStat({ total: data.length, good: good.length, bad: bad.length });
+                setBaseData(data);
+            })
+            .catch(err => {
+                toast.fire({
+                    text: err.response.data.msg || 'Xatolik ',
+                    toast: true,
+                    position: 'top-end',
+                    timer: 3000,
+                    timerProgressBar: true
+                });
             });
-        });
     }, []);
     return (
         <div>
@@ -97,7 +99,7 @@ const IndexOperator = () => {
                                     <td>
                                         <div className='whitespace-nowrap    flex items-center gap-2'>
                                             {' '}
-                                            {data.signal ==='good' ? <GreenDot /> : <RedDot />} {data?.signal === "good"? 'Yaxshi' : "Signal yo'q"}{' '}
+                                            {data.signal === 'good' ? <GreenDot /> : <RedDot />} {data?.signal === 'good' ? 'Yaxshi' : "Signal yo'q"}{' '}
                                         </div>
                                     </td>
                                 </tr>

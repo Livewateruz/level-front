@@ -26,7 +26,7 @@ function UserDevices () {
     }, [pageSize]);
     useEffect(() => {
         getData({
-            url: `/devices/user?page[offset]=${page - 1}&page[limit]=${pageSize}`,
+            url: `/devices?page[offset]=${page - 1}&page[limit]=${pageSize}`,
             setData: setDevices,
             setLoading,
             token
@@ -59,7 +59,7 @@ function UserDevices () {
                                 {
                                     accessor: 'Tartib',
                                     sortable: false,
-                                    render: ({ _id } ,i) => (
+                                    render: (_ ,i) => (
                                         <span>
                                             <div className='text-primary underline hover:no-underline font-semibold'>{((devices.limit *  devices.offset) + (i+1))}</div>
                                         </span>
@@ -77,7 +77,7 @@ function UserDevices () {
                                 {
                                     accessor: 'Seriya',
                                     sortable: false,
-                                    render: ({ serie, _id }) => (
+                                    render: ({ serie, }) => (
                                         <span>
                                             <div >{`${serie}`}</div>
                                         </span>
@@ -86,9 +86,9 @@ function UserDevices () {
                                 {
                                     accessor: 'Obyekt nomi',
                                     sortable: false,
-                                    render: ({  }) => (
+                                    render: ({name  }) => (
                                         <span>
-                                            <div className='font-semibold'>{`${ ""}`}</div>
+                                            <div className='font-semibold'>{name}</div>
                                         </span>
                                     )
                                 },
@@ -97,14 +97,14 @@ function UserDevices () {
                                     sortable: true,
                                     render: ({ region }) => (
                                         <div className='flex items-center font-semibold'>
-                                            <div>{region.name}</div>
+                                            <div>{region?.name}</div>
                                         </div>
                                     )
                                 },
                                 {
                                     accessor: 'Egasi',
                                     sortable: false,
-                                    render: ({  }) => <div className='whitespace-nowrap flex items-center gap-2'>{user.first_name + ' ' + user.last_name}</div>
+                                    render: ({  }) => <div className='whitespace-nowrap flex items-center gap-2'>{user?.first_name + ' ' + user?.last_name}</div>
                                 },
                                 {
                                     accessor: 'Status',

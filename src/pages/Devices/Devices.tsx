@@ -68,7 +68,7 @@ function Devices () {
                                     sortable: false,
                                     render: ({ _id } , i) => (
                                         <span key={_id}>
-                                            <div className='text-primary underline hover:no-underline font-semibold'>{((devices.limit *  devices.offset) + (i+1))}</div>
+                                            <div className='text-primary underline hover:no-underline font-semibold'>{((devices?.limit *  devices?.offset) + (i+1))}</div>
                                         </span>
                                     )
                                 },
@@ -82,9 +82,9 @@ function Devices () {
                                     )
                                 },
                                 {
-                                    accessor: 'obyekt nomi',
+                                    accessor: 'Obyekt nomi',
                                     sortable: false,
-                                    render: ({ name, _id }) => (
+                                    render: ({ name,  }) => (
                                         <span>
                                             <div className='text-primary underline hover:no-underline font-semibold'>{`${name}`}</div>
                                         </span>
@@ -101,7 +101,7 @@ function Devices () {
                                 },
                                 {
                                     accessor: 'Joylashuv',
-                                    sortable: true,
+                                    sortable: false,
                                     render: ({ region }) => (
                                         <div className='flex items-center font-semibold'>
                                             <div>{region?.name}</div>
@@ -112,7 +112,7 @@ function Devices () {
                                 {
                                     accessor: 'Egasi',
                                     sortable: false,
-                                    render: ({ owner }) => <div className='whitespace-nowrap flex items-center gap-2'>{owner.first_name + ' ' + owner.last_name}</div>
+                                    render: ({ owner }) => <div className='whitespace-nowrap flex items-center gap-2'>{owner?.first_name + ' ' + owner?.last_name}</div>
                                 },
                                 {
                                     accessor: 'Status',

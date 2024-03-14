@@ -3,15 +3,18 @@ import { api } from '../../utils/api';
 import { AxiosResponse } from 'axios';
 import { toast } from '../../utils/toast';
 import {  Delivered } from '../../types';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../store';
 
 const Sms = () => {
     const [data, setData] = useState<{ data: { balance: number }; status: string }>();
     const [delivered, setDelivered] = useState<any>();
     const [loading, setLoading] = useState<'refreshing' | 'uploading' | 'updating' | 'noaction'>('noaction');
+    const token = useSelector((state : IRootState) => state.data.token)
 
     const [report, setReport] = useState<{ year?: string; month?: string }>({});
     useEffect(() => {
-        api.get('sms/limit')
+        api.get('sms/limit' , { headers: { authorization: `Bearer ${token}` } })
             .then((res: AxiosResponse) => {
                 setData(res.data);
             })
@@ -27,7 +30,7 @@ const Sms = () => {
     };
     const submit = (e: any) => {
         e.preventDefault();
-        api.post('sms/total', report)
+        api.post('sms/total', report , { headers: { authorization: `Bearer ${token}` } })
             .then((response: AxiosResponse) => {
                 setDelivered(response.data);
             })
@@ -37,7 +40,7 @@ const Sms = () => {
     };
     const refresh = (e: any) => {
         setLoading('refreshing');
-        api.get('sms/refresh')
+        api.get('sms/refresh' , { headers: { authorization: `Bearer ${token}` } })
             .then((res: AxiosResponse) => {
                 toast.fire({ icon: 'success', title: res?.data?.msg || 'SMS token' });
             })

@@ -15,9 +15,8 @@ import { useNavigate } from 'react-router-dom';
 
 const DefaultLayout = ({ children }: PropsWithChildren) => {
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
-    const { token } = useSelector((state: IRootState) => state.data);
+    const { token , role } = useSelector((state: IRootState) => state.data);
     const dispatch = useDispatch();
-
     const [showLoader, setShowLoader] = useState(true);
     const [showTopButton, setShowTopButton] = useState(false);
     const goToTop = () => {

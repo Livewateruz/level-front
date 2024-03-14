@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IRootState } from '../../store';
-import { RegionFace, UserFaceOpt } from '../../types';
+import { RegionFace, UserFace, UserFaceOpt } from '../../types';
 import { api, deleteItem } from '../../utils/api';
 import { toast } from '../../utils/toast';
 import { Miniloader } from '../Component/Miniloader';
@@ -10,23 +10,24 @@ import MaskedInput from 'react-text-mask';
 
 const PreviewUser = () => {
     const { id } = useParams();
-    const [user, setUser] = useState<UserFaceOpt>({});
+    const [user, setUser] = useState<UserFace |  null>();
+    const [form, setForm] = useState<UserFaceOpt>({});
     const [regions, setRegions] = useState<RegionFace[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const token = useSelector((state : IRootState) => state.data.token)
     const navigate =  useNavigate()
     useEffect(() => {
         setLoading(true);
-        api(`users/${id}`).then(res => {
+        api(`users/${id}` , { headers: { authorization: `Bearer ${token}` } }).then(res => {
             setUser(res.data);
             setLoading(false);
         });
-        api(`regions`).then(res => {
+        api(`regions` , { headers: { authorization: `Bearer ${token}` } }).then(res => {
             setRegions(res.data.data);
         });
     }, [id]);
     const handleChange = (e: any) => {
-        setUser(prevData => ({
+        setForm(prevData => ({
             ...prevData,
             [e.target.name]: e.target.value
         }));
@@ -34,7 +35,7 @@ const PreviewUser = () => {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
-        api.patch(`users/${id}`, user)
+        api.patch(`users/${id}`, form , { headers: { authorization: `Bearer ${token}` } })
             .then(res => {
                 toast.fire({ icon: 'success', padding: '10px 20px', title: 'Yangilandi!' });
                 setLoading(false);
@@ -75,7 +76,7 @@ const PreviewUser = () => {
                                 Ism
                             </label>
                             <input
-                                value={user?.first_name}
+                                defaultValue={user?.first_name}
                                 name='first_name'
                                 onChange={e => handleChange(e)}
                                 id='horizontalName'
@@ -89,7 +90,7 @@ const PreviewUser = () => {
                                 Familiya
                             </label>
                             <input
-                                value={user?.last_name}
+                                defaultValue={user?.last_name}
                                 name='last_name'
                                 onChange={e => handleChange(e)}
                                 id='horizontalLastname'
@@ -103,7 +104,7 @@ const PreviewUser = () => {
                                 Foydalanuvchi nomi
                             </label>
                             <input
-                                value={user?.username}
+                                defaultValue={user?.username}
                                 name='username'
                                 onChange={e => handleChange(e)}
                                 id='horizontalUsername'
@@ -117,13 +118,12 @@ const PreviewUser = () => {
                                 Foydalanuvchi mobil raqami
                             </label>
                             <MaskedInput
-                            value={user.mobil_phone}
+                            defaultValue={user?.mobil_phone  || ''}
                             onChange={e => handleChange(e)}
                             id='phoneMask'
                             type='text'
                             placeholder='Mobil nomer'
                             className='form-input flex-1'
-                            defaultValue={'998'}
                             name='mobil_phone'
                             mask={[ /[0-9]/, /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/,  /[0-9]/, /[0-9]/]}
                         />
@@ -155,7 +155,7 @@ const PreviewUser = () => {
                             <label htmlFor='horizontalPassword' className='mb-0 sm:w-1/4 sm:ltr:mr-2 rtl:ml-2'>
                                 Parol
                             </label>
-                            <input id='horizontalPassword' type='text' placeholder='Parolni kiriting' className='form-input flex-1' />
+                            <input onChange={e => handleChange(e)} id='horizontalPassword' name='password' type='text' placeholder='Parolni kiriting' className='form-input flex-1' />
                         </div>
                     </div>
                 </div>

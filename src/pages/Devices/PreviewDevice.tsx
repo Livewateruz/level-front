@@ -21,13 +21,13 @@ const PreviewDevice = () => {
     const { token } = useSelector((state: IRootState) => state.data);
     const [regions, setRegions] = useState<{ data: RegionFace[] }>({ data: [] });
     const [users, setUsers] = useState<{ data: UserFace[] }>({ data: [] });
-    const [loading, setLoading] = useState<"deleting" | "updating" | "noaction" |"checking">("noaction");
+    const [loading, setLoading] = useState<'deleting' | 'updating' | 'noaction' | 'checking'>('noaction');
     useEffect(() => {
-        const socket = new WebSocket('wss://livewater.uz:1880/modem');
+        const socket = new WebSocket('ws://livewater.uz:1880/modem');
         socket.addEventListener('open', event => {
             toast.fire({
                 icon: 'success',
-                title: 'Socket bilan bog\'landi',
+                title: "Socket bilan bog'landi",
                 padding: '10px 20px'
             });
         });
@@ -38,20 +38,22 @@ const PreviewDevice = () => {
                 title: 'Qurilma ishlayapti',
                 padding: '10px 20px'
             });
-            setLoading("noaction")
+            setLoading('noaction');
         });
         socket.addEventListener('close', event => {
             toast.fire({
                 icon: 'error',
-                title: 'Socket bilan bog\'lanish yuq',
+                title: "Socket bilan bog'lanish yuq",
                 padding: '10px 20px'
             });
         });
-        api(`devices/${id}`)
+        api(`devices/${id}`, { headers: { authorization: `Bearer ${token}` } })
             .then(res => {
+                // console.log(res.data);
                 const resdata: DevicesFace = res.data;
-                const owner = resdata.owner._id;
-                const region = resdata.region._id;
+                const owner = resdata?.owner?._id;
+                const region = resdata?.region?._id;
+                console.log(res.data);
                 setData({ ...res.data, owner, region });
             })
             .catch(err => {});
@@ -71,7 +73,7 @@ const PreviewDevice = () => {
     };
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-         if(Object.keys(sendeData).length === 0) return toast.fire({ icon: 'error', padding: '10px 20px', title: 'Hech narsa o\'zgartirilmadi!' }); 
+        if (Object.keys(sendeData).length === 0) return toast.fire({ icon: 'error', padding: '10px 20px', title: "Hech narsa o'zgartirilmadi!" });
         Swal.fire({
             icon: 'warning',
             title: 'Qurilma yangilanadi?',
@@ -82,9 +84,8 @@ const PreviewDevice = () => {
             padding: '2em',
             customClass: 'sweet-alerts'
         }).then(result => {
-           
             if (result.isConfirmed) {
-                setLoading("updating");
+                setLoading('updating');
                 api.patch(`devices/${id}`, { ...sendeData, file }, { headers: { authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } })
                     .then(res => {
                         toast.fire({ icon: 'success', padding: '10px 20px', title: 'Yangilandi!' });
@@ -92,8 +93,9 @@ const PreviewDevice = () => {
                     })
                     .catch(err => {
                         toast.fire({ icon: 'error', padding: '10px 20px', title: err.response?.data?.msg || err.message });
-                    }).finally(()=>{
-                        setLoading("noaction");
+                    })
+                    .finally(() => {
+                        setLoading('noaction');
                     });
             }
         });
@@ -110,7 +112,7 @@ const PreviewDevice = () => {
             customClass: 'sweet-alerts'
         }).then(result => {
             if (result.isConfirmed) {
-                setLoading("deleting");
+                setLoading('deleting');
                 api.delete(`devices/${id}`, { headers: { authorization: `Bearer ${token}` } })
                     .then(res => {
                         Swal.fire({ title: 'Deleted!', text: res.data.msg, icon: 'success', customClass: 'sweet-alerts' });
@@ -118,36 +120,36 @@ const PreviewDevice = () => {
                     })
                     .catch(error => {
                         Swal.fire({ title: "O'chirilmadi!", text: error.message, icon: 'error', customClass: 'sweet-alerts' });
-                    }).finally(()=>{
-                        setLoading("noaction");
+                    })
+                    .finally(() => {
+                        setLoading('noaction');
                     });
             }
         });
     }
 
-
     const check = () => {
-        setLoading("checking")
-    data.serie  &&
-            axios(`http://livewater.uz:1880/test?serie=${ sendeData.serie || data?.serie}`).then(res => {
+        setLoading('checking');
+        data.serie &&
+            axios(`http://livewater.uz:1880/test?serie=${sendeData.serie || data?.serie}`).then(res => {
                 toast.fire({
                     icon: 'success',
                     iconColor: 'yellow',
                     title: `${res.data} ushbu seriyali qurilmaga jo'natildi`,
                     padding: '10px 20px'
                 });
-
             });
-            setTimeout(() => {
-                isWorking &&
-                    toast.fire({
-                        icon: 'error',
-                        title: 'Ishlamayapti!',
-                        padding: '10px 20px'
-                    });
-                    setLoading("noaction")
-            }, 5000);
+        setTimeout(() => {
+            isWorking &&
+                toast.fire({
+                    icon: 'error',
+                    title: 'Ishlamayapti!',
+                    padding: '10px 20px'
+                });
+            setLoading('noaction');
+        }, 5000);
     };
+    console.log(data);
     return (
         <div>
             <ul className='flex space-x-2 rtl:space-x-reverse'>
@@ -168,9 +170,9 @@ const PreviewDevice = () => {
             <div className='flex justify-between  flex-wrap w-full  mt-5'>
                 <form onSubmit={e => handleSubmit(e)} className=' flex justify-between gap-32 px-10  w-full '>
                     <div className='mb-6  w-1/2'>
-                    <div className='flex items-center mt-4'>
+                        <div className='flex items-center mt-4'>
                             <label htmlFor='name' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
-                            Obyekt nomi
+                                Obyekt nomi
                             </label>
                             <input defaultValue={data.name} required onChange={e => handleChange(e)} id='name' type='text' name='name' className='form-input lg:w-[270px] w-2/3' placeholder='123' />
                         </div>
@@ -212,7 +214,9 @@ const PreviewDevice = () => {
                                 <select value={data?.region} required className='form-input lg:w-[270px] w-2/4' onChange={e => handleChange(e)} name='region' id='region'>
                                     <option disabled>Hududni tanlang</option>
                                     {regions.data.map((r, i) => (
-                                        <option key={i} value={r._id}>{r.name}</option>
+                                        <option key={i} value={r._id}>
+                                            {r.name}
+                                        </option>
                                     ))}
                                 </select>
                             </div>
@@ -241,7 +245,9 @@ const PreviewDevice = () => {
                             </label>
                             <div className=' font-semibold text-lg bg-black dark:bg-black-dark-light'>
                                 <select value={data?.owner} required className='form-input lg:w-[270px] w-2/4' onChange={e => handleChange(e)} name='owner' id='owner'>
-                                    <option key={"heyyo"} disabled>Foydalanuvchini tanlang</option>
+                                    <option key={'heyyo'} disabled>
+                                        Foydalanuvchini tanlang
+                                    </option>
                                     {users.data.map((r, i) => (
                                         <option key={i} value={r._id}>
                                             {r.first_name + ' ' + r.last_name}
@@ -278,14 +284,14 @@ const PreviewDevice = () => {
                             </div>
                         </div>
                         <div className='flex justify-between mt-20'>
-                            <button disabled={loading !== "noaction"} onClick={deleteDevice} type='button' className='btn   btn-danger '>
-                              O'chirish {loading === 'deleting' && <Miniloader/>}
+                            <button disabled={loading !== 'noaction'} onClick={deleteDevice} type='button' className='btn   btn-danger '>
+                                O'chirish {loading === 'deleting' && <Miniloader />}
                             </button>
-                            <button  disabled={loading !== "noaction"} onClick={check} type='button' className='btn   btn-outline-primary  '>
-                            Tekshirish {loading === 'checking' && <Miniloader/>}
-                        </button>
-                            <button disabled={loading !== "noaction"} type='submit' className='btn   btn-outline-primary '>
-                                Yangilash {loading === 'updating' && <Miniloader/>}
+                            <button disabled={loading !== 'noaction'} onClick={check} type='button' className='btn   btn-outline-primary  '>
+                                Tekshirish {loading === 'checking' && <Miniloader />}
+                            </button>
+                            <button disabled={loading !== 'noaction'} type='submit' className='btn   btn-outline-primary '>
+                                Yangilash {loading === 'updating' && <Miniloader />}
                             </button>
                         </div>
                     </div>

@@ -40,7 +40,7 @@ function Events () {
         getData({ url: '/regions', setData: setRegions, token });
     }, []);
     useEffect(() => {
-        getData({ url: `/devices/reg?${data?.region ? `filter[region]=${data.region}` : ''}`, setData: setDevices, token });
+        getData({ url: `/devices?${data?.region ? `filter[region]=${data.region}` : ''}`, setData: setDevices, token });
     }, [data?.region]);
     useEffect(() => {
         getData({
