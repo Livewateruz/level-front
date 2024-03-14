@@ -15,40 +15,10 @@ const AddDevice = () => {
     const [data, setData] = useState<{ serie: string }>({ serie: '' });
     const { token,  } = useSelector((state: IRootState) => state.data);
     const [regions, setRegions] = useState<{ data: RegionFace[] }>({ data: [] });
-    const [isWorking, setWorking] = useState<boolean>(false);
     const [users, setUsers] = useState<{ data: UserFace[] }>({ data: [] });
     const [loading, setLoading] = useState<"creating" | "checking" | "noaction">("noaction");
     const [file, setFile] = useState<File | null>(null);
-    useEffect(() => {
-        const socket = new WebSocket('wss://livewater.uz:1880/modem');
-        socket.addEventListener('open', event => {
-            toast.fire({ 
-                icon: 'success',
-                title: 'Socket bilan nglanfi',
-                padding: '10px 20px'
-            });
-        });
-        socket.addEventListener('message', event => {
-            setWorking(true);
-            toast.fire({
-                icon: 'success',
-                title: 'Qurilma ishlayapti',
-                padding: '10px 20px'
-            });
-            setLoading("noaction")
-        });
-        socket.addEventListener('close', event => {
-            console.log(event);
-            toast.fire({
-                icon: 'error',
-                title: 'Socket bilan boglanish yuq',
-                padding: '10px 20px'
-            });
-        });
-        return () => {
-            socket.close();
-        };
-    }, []);
+
     useEffect(() => {
         getData({ url: 'regions', setData: setRegions, token });
         getData({ url: 'users', setData: setUsers, token });
@@ -89,28 +59,7 @@ const AddDevice = () => {
         });
     };
 
-    const check = () => {
-        setLoading("checking")
-        data.serie &&
-            axios(`http://livewater.uz:1880/test?serie=${data?.serie}`).then(res => {
-                toast.fire({
-                    icon: 'success',
-                    iconColor: 'yellow',
-                    title: `${res.data} ushbu seriyali qurilmaga jo'natildi`,
-                    padding: '10px 20px'
-                });
 
-            });
-        setTimeout(() => {
-            isWorking &&
-                toast.fire({
-                    icon: 'error',
-                    title: 'Ishlamayapti!',
-                    padding: '10px 20px'
-                });
-                setLoading("noaction")
-        }, 5000);
-    };
     return (
         <div>
             <ul className='flex space-x-2 rtl:space-x-reverse'>
@@ -230,9 +179,7 @@ const AddDevice = () => {
                             </div>
                         </div>
                         <div className='flex justify-between mt-10'>
-                        <button onClick={check} disabled={loading !== "noaction"} type='button' className='btn   btn-outline-primary'>
-                            Tekshirish {loading === "checking" && <Miniloader/>}
-                        </button>
+                     
                         <button type='submit' disabled={loading !== "noaction"} className='btn   btn-outline-primary  '>
                             Saqlash {loading === "creating" && <Miniloader/>}
                         </button>

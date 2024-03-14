@@ -22,44 +22,7 @@ const PreviewDevice = () => {
     const [regions, setRegions] = useState<{ data: RegionFace[] }>({ data: [] });
     const [users, setUsers] = useState<{ data: UserFace[] }>({ data: [] });
     const [loading, setLoading] = useState<'deleting' | 'updating' | 'noaction' | 'checking'>('noaction');
-    useEffect(() => {
-        const socket = new WebSocket('ws://livewater.uz:1880/modem');
-        socket.addEventListener('open', event => {
-            toast.fire({
-                icon: 'success',
-                title: "Socket bilan bog'landi",
-                padding: '10px 20px'
-            });
-        });
-        socket.addEventListener('message', event => {
-            setWorking(true);
-            toast.fire({
-                icon: 'success',
-                title: 'Qurilma ishlayapti',
-                padding: '10px 20px'
-            });
-            setLoading('noaction');
-        });
-        socket.addEventListener('close', event => {
-            toast.fire({
-                icon: 'error',
-                title: "Socket bilan bog'lanish yuq",
-                padding: '10px 20px'
-            });
-        });
-        api(`devices/${id}`, { headers: { authorization: `Bearer ${token}` } })
-            .then(res => {
-                // console.log(res.data);
-                const resdata: DevicesFace = res.data;
-                const owner = resdata?.owner?._id;
-                const region = resdata?.region?._id;
-                console.log(res.data);
-                setData({ ...res.data, owner, region });
-            })
-            .catch(err => {});
-        getData({ url: 'regions', setData: setRegions, token });
-        getData({ url: 'users', setData: setUsers, token });
-    }, []);
+  
 
     const handleChange = (e: any) => {
         setData(prevData => ({
@@ -128,28 +91,6 @@ const PreviewDevice = () => {
         });
     }
 
-    const check = () => {
-        setLoading('checking');
-        data.serie &&
-            axios(`http://livewater.uz:1880/test?serie=${sendeData.serie || data?.serie}`).then(res => {
-                toast.fire({
-                    icon: 'success',
-                    iconColor: 'yellow',
-                    title: `${res.data} ushbu seriyali qurilmaga jo'natildi`,
-                    padding: '10px 20px'
-                });
-            });
-        setTimeout(() => {
-            isWorking &&
-                toast.fire({
-                    icon: 'error',
-                    title: 'Ishlamayapti!',
-                    padding: '10px 20px'
-                });
-            setLoading('noaction');
-        }, 5000);
-    };
-    console.log(data);
     return (
         <div>
             <ul className='flex space-x-2 rtl:space-x-reverse'>
@@ -250,7 +191,7 @@ const PreviewDevice = () => {
                                     </option>
                                     {users.data.map((r, i) => (
                                         <option key={i} value={r._id}>
-                                            {r.first_name + ' ' + r.last_name}
+                                            {r?.first_name + ' ' + r?.last_name + ' ' + r?.role}
                                         </option>
                                     ))}
                                 </select>
@@ -287,9 +228,7 @@ const PreviewDevice = () => {
                             <button disabled={loading !== 'noaction'} onClick={deleteDevice} type='button' className='btn   btn-danger '>
                                 O'chirish {loading === 'deleting' && <Miniloader />}
                             </button>
-                            <button disabled={loading !== 'noaction'} onClick={check} type='button' className='btn   btn-outline-primary  '>
-                                Tekshirish {loading === 'checking' && <Miniloader />}
-                            </button>
+                           
                             <button disabled={loading !== 'noaction'} type='submit' className='btn   btn-outline-primary '>
                                 Yangilash {loading === 'updating' && <Miniloader />}
                             </button>
