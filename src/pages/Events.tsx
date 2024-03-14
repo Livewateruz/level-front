@@ -92,6 +92,7 @@ function Events () {
             url: fileDownloadUrl,
             method: 'GET',
             responseType: 'blob',
+            headers: { authorization: `Bearer ${token}` },
             onDownloadProgress: e => {
                 const newProgress = Math.round((e.loaded * 100) / e.total!);
                 setProgress(newProgress);
@@ -118,7 +119,6 @@ function Events () {
             [e.target.name]: e.target.value
         }));
     };
-    console.log(events.offset + 1);
     return (
         <>
             <ul className='flex space-x-2 rtl:space-x-reverse'>
@@ -185,15 +185,15 @@ function Events () {
                             <label className='inline-flex   items-start '>
                                 <input onChange={e => handleChange(e)} type='radio' name='region' value={''} className='form-radio outline-success' />
                                 <span>Hammasi</span>
-                                
                             </label>
-                            <div className="flex flex-col items-start max-h-[80%]">
+                            <div className='flex flex-col items-start max-h-[80%]'>
                                 {regions.data.map((el, i) => (
                                     <label key={i} className='inline-flex  justify-between items-center'>
                                         <input onChange={e => handleChange(e)} type='radio' name='region' value={el._id} className='form-radio outline-success' />
                                         <span>{el.name}</span>
                                     </label>
-                                ))}</div>
+                                ))}
+                            </div>
                         </div>
                         <select className='form-input flex  gap-2' onChange={e => setDevice(e.target.value)}>
                             <option value={''}>Seriya</option>

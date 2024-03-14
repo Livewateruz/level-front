@@ -32,13 +32,14 @@ function Devices () {
             token
         });
     }, [page, pageSize]);
- 
+
     return (
         <div>
             <ul className='flex space-x-2 rtl:space-x-reverse'>
                 <li>
                     <Link to='/' className='text-primary hover:underline'>
-                    Asosiy sahifa                    </Link>
+                        Asosiy sahifa{' '}
+                    </Link>
                 </li>
                 <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
                     <span>Qurilmalar</span>
@@ -66,9 +67,9 @@ function Devices () {
                                 {
                                     accessor: 'N',
                                     sortable: false,
-                                    render: ({ _id } , i) => (
+                                    render: ({ _id }, i) => (
                                         <span key={_id}>
-                                            <div className='text-primary underline hover:no-underline font-semibold'>{((devices?.limit *  devices?.offset) + (i+1))}</div>
+                                            <div className='text-primary font-semibold'>{devices?.limit * devices?.offset + (i + 1)}</div>
                                         </span>
                                     )
                                 },
@@ -77,16 +78,16 @@ function Devices () {
                                     sortable: false,
                                     render: ({ _id }) => (
                                         <span key={_id}>
-                                            <div className='text-primary underline hover:no-underline font-semibold'>{`${_id}`}</div>
+                                            <div className=' font-semibold'>{`${_id}`}</div>
                                         </span>
                                     )
                                 },
                                 {
                                     accessor: 'Obyekt nomi',
                                     sortable: false,
-                                    render: ({ name,  }) => (
+                                    render: ({ name }) => (
                                         <span>
-                                            <div className='text-primary underline hover:no-underline font-semibold'>{`${name}`}</div>
+                                            <div className=' font-semibold'>{`${name}`}</div>
                                         </span>
                                     )
                                 },
@@ -95,7 +96,7 @@ function Devices () {
                                     sortable: false,
                                     render: ({ serie, _id }) => (
                                         <span>
-                                            <div className='text-primary underline hover:no-underline font-semibold'>{`${serie}`}</div>
+                                            <div className=' font-semibold'>{`${serie}`}</div>
                                         </span>
                                     )
                                 },
@@ -108,7 +109,7 @@ function Devices () {
                                         </div>
                                     )
                                 },
-                                
+
                                 {
                                     accessor: 'Egasi',
                                     sortable: false,
@@ -117,7 +118,21 @@ function Devices () {
                                 {
                                     accessor: 'Status',
                                     sortable: false,
-                                    render: ({ isWorking }) => <div className='whitespace-nowrap flex items-center gap-2'>{isWorking ? <><GreenDot/>Qurilma ishlayapti</>:<><RedDot/>Aloqa yo'q</>}</div>
+                                    render: ({ isWorking }) => (
+                                        <div className='whitespace-nowrap flex items-center gap-2'>
+                                            {isWorking ? (
+                                                <>
+                                                    <GreenDot />
+                                                    Qurilma ishlayapti
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <RedDot />
+                                                    Aloqa yo'q
+                                                </>
+                                            )}
+                                        </div>
+                                    )
                                 },
 
                                 {
