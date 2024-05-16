@@ -63,7 +63,7 @@ const Regions = () => {
     };
     function addRegion (e: React.FormEvent) {
         e.preventDefault();
-        api.post('regions', data)
+        api.post('regions', data , { headers: { authorization: `Bearer ${token}` } } )
             .then(res => {
                 Swal.fire({ title: 'Muvaffaqqiyatli!', text: res.data.msg, icon: 'success', customClass: 'sweet-alerts' });
                 setRegions({ ...regions, ...data });
