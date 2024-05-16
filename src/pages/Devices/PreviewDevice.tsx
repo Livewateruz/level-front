@@ -27,7 +27,6 @@ const PreviewDevice = () => {
                 const resdata: DevicesFace = res.data;
                 const owner = resdata?.owner?._id;
                 const region = resdata?.region?._id;
-                console.log(res.data);
                 setData({ ...res.data, owner, region });
             })
             .catch(err => {});

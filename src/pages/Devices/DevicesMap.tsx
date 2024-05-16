@@ -18,7 +18,6 @@ function DevicesMap () {
         getData({ url: 'devices?page[limit]=1000', setData, setLoading, token });
     }, []);
     const navigatee = (id: string) => {
-        console.log('kekk');
         navigate(`/devices/${id}`);
     };
     return (

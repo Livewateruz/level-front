@@ -6,12 +6,14 @@ import { IRootState } from '../store';
 import getData from '../utils/getData';
 import Swal from 'sweetalert2';
 import { api } from '../utils/api';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { ErrorHandler } from '../utils/error-handler';
 
 const Regions = () => {
     const [regions, setRegions] = useState<{ total: number; offset: number; data: RegionFace[]; limit: number }>({ data: [], limit: 0, offset: 0, total: 0 });
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState({ name: '' });
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -68,7 +70,7 @@ const Regions = () => {
                 setData({ name: '' });
             })
             .catch(err => {
-                Swal.fire({ title: 'Xatolik!', text: err.message, icon: 'error', customClass: 'sweet-alerts' });
+                ErrorHandler(err, navigate);
             });
     }
     return (
@@ -76,7 +78,7 @@ const Regions = () => {
             <ul className='flex space-x-2 rtl:space-x-reverse'>
                 <li>
                     <Link to='/' className='text-primary hover:underline'>
-                    Asosiy sahifa
+                        Asosiy sahifa
                     </Link>
                 </li>
                 <li className="before:content-['/'] ltr:before:mr-2 rtl:before:ml-2">
@@ -86,7 +88,7 @@ const Regions = () => {
             <form onSubmit={e => addRegion(e)} className='flex  gap-5 items-center justify-center max-w-[550px] my-3 '>
                 <input value={data.name} name='name' onChange={e => handleChange(e)} type='text' placeholder='Region..' className='form-input w-2/3' required />
                 <button type='submit' className='btn btn-primary w-fit  '>
-                  Yangi qo'shish+
+                    Yangi qo'shish+
                 </button>
             </form>
             <div className='table-responsive mb-5 w-full'>

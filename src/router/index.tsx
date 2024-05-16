@@ -14,7 +14,6 @@ const DefaultRouterProvider = () => {
         };
     });
     const sortedRoutes = finalRoutes.filter(route => route.for === role || route.for === 'nouser' );
-    console.log(sortedRoutes);
     const router = createBrowserRouter(sortedRoutes);
     return <RouterProvider router={router} />;
 };

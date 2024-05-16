@@ -34,6 +34,23 @@ function Events () {
     const [page, setPage] = useState<number>(0);
     const { token } = useSelector((state: IRootState) => state.data);
 
+    useEffect(() => {
+        function handleKeyDown (event: KeyboardEvent) {
+            if (event.ctrlKey && event.key === '6' && !loading) {
+                !loading && setPage(page + 1);
+            }
+            if (event.ctrlKey && event.key === '4' && !loading && page > 0) {
+                setPage(page - 1);
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [page, loading]);
+
     const header = ['_id', 'level', 'volume', 'date_in_ms', 'signal', 'updated_at', 'created_at', 'serie', 'name'];
     useEffect(() => {
         dispatch(setPageTitle('Constructor'));
@@ -44,7 +61,7 @@ function Events () {
     }, [data?.region]);
     useEffect(() => {
         getData({
-            url: `/basedata?page[offset]=${page}&${from ? `filter[start]=${from}` : ''}&${to ? `filter[end]=${to}` : ''}&${device ? `filter[device]=${device}` : ''}&${
+            url: `/basedata?page[offset]=${page}&page[limit]=50&${from ? `filter[start]=${from}` : ''}&${to ? `filter[end]=${to}` : ''}&${device ? `filter[device]=${device}` : ''}&${
                 data?.region ? `filter[region]=${data?.region}` : ''
             }`,
             setData: setEvents,
@@ -57,7 +74,7 @@ function Events () {
         e.preventDefault();
         setPage(0);
         getData({
-            url: `/basedata?page[offset]=${page}${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}${
+            url: `/basedata?page[offset]=${page}${from ? `&page[limit]=50&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}${
                 data?.region ? `&filter[region]=${data.region}` : ''
             }`,
             setData: setEvents,
@@ -214,7 +231,7 @@ function Events () {
                     </form>
 
                     <div className='table-responsive mb-5 w-full'>
-                        <table>
+                        <table className='' >
                             <thead>
                                 <tr>
                                     <th className='text-xs'>#</th>
@@ -228,10 +245,10 @@ function Events () {
                                     <th className='text-xs'>Signal darajasi</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody className='overflow-x-hidden'>
                                 {events.data.map((data, i) => {
                                     return (
-                                        <tr key={data._id}>
+                                        <tr className='overflow-x-hidden' key={data._id}>
                                             <td>{events.limit * events.offset + (i + 1)}</td>
                                             <td>
                                                 <div className='whitespace-nowrap text-xs'>{data?.device?.serie}</div>
