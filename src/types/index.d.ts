@@ -4,27 +4,29 @@ export interface DevicesFace {
     lat: number;
     long: number;
     serie: string;
-    name: string ;
+    name: string;
     device_privet_key: string;
+    contractor: string;
     date: number;
     owner: UserFace;
-    isWorking : boolean;
+    isWorking: boolean;
     created_at: string;
     updated_at: string;
 }
-export interface ResponseData <T>{
-    total : number;
-    offset : number;
-    limit : number;
-    data : T[];
+export interface ResponseData<T> {
+    total: number;
+    offset: number;
+    limit: number;
+    data: T[];
 }
 export interface DevicesFaceOpt {
     _id?: string;
     region?: string;
+    contractor?: string;
     lat?: number;
     long?: number;
     serie?: string;
-    name?: string ;
+    name?: string;
     device_privet_key?: string;
     date?: number;
     owner?: string;
@@ -40,7 +42,7 @@ export interface UserFace {
     mobil_phone: string;
     role: string;
     region: string;
-    devices :DevicesFace[]
+    devices: DevicesFace[];
     created_at: string;
     updated_at: string;
 }
@@ -76,8 +78,8 @@ export interface EventFaceHandelExel {
     volume: number;
     signal: 'good' | 'nosignal';
     date_in_ms: number;
-    serie : string ;
-    name: string ;
+    serie: string;
+    name: string;
 }
 export interface ServerdataFace {
     [key: string]: string | number | boolean;
@@ -91,8 +93,7 @@ export interface ServerdataFace {
     updated_at: string;
 }
 
-
-export interface  Delivered {
+export interface Delivered {
     month: string;
     packets: number;
     sent_packets: number;

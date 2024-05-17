@@ -9,13 +9,12 @@ import getData from '../../utils/getData';
 
 function DevicesMap () {
     const dispatch = useDispatch();
-    const { token } = useSelector((state: IRootState) => state.data);
     const navigate = useNavigate();
     const [data, setData] = useState<{ total: number; offset: number; data: DevicesFace[]; limit: number }>({ data: [], limit: 0, offset: 0, total: 0 });
     const [loading, setLoading] = useState(false);
     useEffect(() => {
         dispatch(setPageTitle('Qurilmalar xaritada'));
-        getData({ url: 'devices?page[limit]=1000', setData, setLoading, token });
+        getData({ url: 'devices?page[limit]=1000', setData, setLoading });
     }, []);
     const navigatee = (id: string) => {
         navigate(`/devices/${id}`);

@@ -13,15 +13,14 @@ import { Miniloader } from '../Component/Miniloader';
 const AddDevice = () => {
     const navigate = useNavigate();
     const [data, setData] = useState<{ serie: string }>({ serie: '' });
-    const { token,  } = useSelector((state: IRootState) => state.data);
     const [regions, setRegions] = useState<{ data: RegionFace[] }>({ data: [] });
     const [users, setUsers] = useState<{ data: UserFace[] }>({ data: [] });
     const [loading, setLoading] = useState<"creating" | "checking" | "noaction">("noaction");
     const [file, setFile] = useState<File | null>(null);
    
     useEffect(() => {
-        getData({ url: 'regions', setData: setRegions, token });
-        getData({ url: 'users', setData: setUsers, token });
+        getData({ url: 'regions', setData: setRegions });
+        getData({ url: 'users', setData: setUsers });
     }, []);
 
     const handleChange = (e: any) => {
@@ -45,7 +44,7 @@ const AddDevice = () => {
         }).then(result => {
             if (result.isConfirmed) {
                 setLoading("creating")
-                api.post('devices', { ...data, file }, { headers: { authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } })
+                api.post('devices', { ...data, file }, { headers: { 'Content-Type': 'multipart/form-data' } })
                     .then(_ => {
                         toast.fire({ icon: 'success', padding: '10px 20px', title: "Qo'shildi!" });
                         navigate(-1);
@@ -92,6 +91,7 @@ const AddDevice = () => {
                             </label>
                             <input required onChange={e => handleChange(e)} id='number' type='text' name='serie' className='form-input lg:w-[270px] w-2/3' placeholder='864333048092134' />
                         </div>
+
                        
                         <div className='flex items-center mt-4'>
                             <label htmlFor='private_key' className='flex-1 ltr:mr-2 rtl:ml-2 mb-0'>
@@ -117,12 +117,19 @@ const AddDevice = () => {
                             </div>
                         </div>
                     </div>
-
+ 
                     <div className='mb-6  w-1/2'>
-                        <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white' htmlFor='multiple_files'>
-                            Passport seriyasini yuklash
-                        </label>
-                        <input
+                    <div className='flex items-center mt-4'>
+                            <label htmlFor='number' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
+                                Qurilma pudratchisi
+                            </label>
+                            <input required onChange={e => handleChange(e)} id='contractor' type='text' name='contractor' className='form-input lg:w-[270px] w-2/3' placeholder='Bobur Akramov' />
+                        </div>
+                    <div className='flex items-center '>
+                            <label htmlFor='number' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
+                                Qurilma passporti
+                            </label>
+                            <input
                             required
                             onChange={e => {
                                 const selectedFile = e.target?.files?.[0];
@@ -130,11 +137,12 @@ const AddDevice = () => {
                                     setFile(selectedFile);
                                 }
                             }}
-                            className='block w-full form-input '
+                            className='form-input w-1/2  mt-4 '
                             id='multiple_files'
                             accept='.xlsx'
                             type='file'
-                        />
+                        />                        </div>
+                        
 
                         <div className='flex items-center mt-4'>
                             <label htmlFor='invoiceLabel' className='flex-1 ltr:mr-2 rtl:ml-2 mb-0'>

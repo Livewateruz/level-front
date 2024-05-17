@@ -21,14 +21,12 @@ const Regions = () => {
     });
 
     const [page, setPage] = useState(1);
-    const { token } = useSelector((state: IRootState) => state.data);
 
     useEffect(() => {
         getData({
             url: `/regions?page[offset]=${page - 1}`,
             setData: setRegions,
             setLoading,
-            token
         });
     }, [page]);
     function deleteDevice (id: string) {
@@ -42,7 +40,7 @@ const Regions = () => {
             customClass: 'sweet-alerts'
         }).then(result => {
             if (result.isConfirmed) {
-                api.delete(`regions/${id}`, { headers: { authorization: `Bearer ${token}` } })
+                api.delete(`regions/${id}`)
                     .then(res => {
                         Swal.fire({ title: "O'chirildi!!", text: res.data.msg, icon: 'success', customClass: 'sweet-alerts' });
                         const index = regions.data.findIndex(el => el._id === id);
@@ -63,7 +61,7 @@ const Regions = () => {
     };
     function addRegion (e: React.FormEvent) {
         e.preventDefault();
-        api.post('regions', data , { headers: { authorization: `Bearer ${token}` } } )
+        api.post('regions', data  )
             .then(res => {
                 Swal.fire({ title: 'Muvaffaqqiyatli!', text: res.data.msg, icon: 'success', customClass: 'sweet-alerts' });
                 setRegions({ ...regions, ...data });

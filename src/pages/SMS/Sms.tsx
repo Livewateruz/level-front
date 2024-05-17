@@ -2,19 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { api } from '../../utils/api';
 import { AxiosResponse } from 'axios';
 import { toast } from '../../utils/toast';
-import {  Delivered } from '../../types';
+import { Delivered } from '../../types';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../store';
+import { getPrettyTime } from '../../utils/utils';
 
 const Sms = () => {
     const [data, setData] = useState<{ data: { balance: number }; status: string }>();
+    const [sended, setSended] = useState<any>({
+        data: {
+            result: []
+        }
+    });
+    const [page, setPage] = useState<number>(0);
     const [delivered, setDelivered] = useState<any>();
     const [loading, setLoading] = useState<'refreshing' | 'uploading' | 'updating' | 'noaction'>('noaction');
-    const token = useSelector((state : IRootState) => state.data.token)
+    const token = useSelector((state: IRootState) => state.data.token);
 
     const [report, setReport] = useState<{ year?: string; month?: string }>({});
     useEffect(() => {
-        api.get('sms/limit' , { headers: { authorization: `Bearer ${token}` } })
+        api.get('sms/limit')
             .then((res: AxiosResponse) => {
                 setData(res.data);
             })
@@ -22,6 +29,18 @@ const Sms = () => {
                 toast.fire({ icon: 'error', title: err?.statusText || 'SMS token' });
             });
     }, []);
+    useEffect(() => {
+        api.get(`sms/sended?page[limit]=20&page[offset]=${page}`)
+            .then((res: AxiosResponse) => {
+                console.log(res.data);
+                setSended(res.data);
+            })
+            .catch((err: AxiosResponse) => {
+                toast.fire({ icon: 'error', title: err?.statusText || 'SMS token' });
+            });
+    }, [page]);
+
+    console.log(sended);
     const handleChange = (e: any) => {
         setReport(prevData => ({
             ...prevData!,
@@ -30,7 +49,7 @@ const Sms = () => {
     };
     const submit = (e: any) => {
         e.preventDefault();
-        api.post('sms/total', report , { headers: { authorization: `Bearer ${token}` } })
+        api.post('sms/total', report, { headers: { authorization: `Bearer ${token}` } })
             .then((response: AxiosResponse) => {
                 setDelivered(response.data);
             })
@@ -40,7 +59,7 @@ const Sms = () => {
     };
     const refresh = (e: any) => {
         setLoading('refreshing');
-        api.get('sms/refresh' , { headers: { authorization: `Bearer ${token}` } })
+        api.get('sms/refresh', { headers: { authorization: `Bearer ${token}` } })
             .then((res: AxiosResponse) => {
                 toast.fire({ icon: 'success', title: res?.data?.msg || 'SMS token' });
             })
@@ -123,7 +142,7 @@ const Sms = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {delivered?.data.map((data: Delivered, key : number) => {
+                            {delivered?.data.map((data: Delivered, key: number) => {
                                 return (
                                     <tr key={key} className=''>
                                         <td className=''>
@@ -147,6 +166,87 @@ const Sms = () => {
                         </tbody>
                     </table>
                 )}
+                <table className='mt-8'>
+                    <thead>
+                        <tr>
+                            <th className='w-fit text-xs whitespace-nowrap'>#</th>
+                            <th className='text-center text-xs whitespace-nowrap'>Message</th>
+                            <th className='text-center text-xs whitespace-nowrap'>To</th>
+                            <th className='text-center text-xs whitespace-nowrap'>Price (UZS)</th>
+                            <th className='text-center text-xs whitespace-nowrap'>Sended</th>
+                            <th className='text-center text-xs whitespace-nowrap'>Delivered</th>
+                            <th className='text-center text-xs whitespace-nowrap'>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {sended?.data?.result.map((data: any, key: number) => {
+                            return (
+                                <tr key={key} className=''>
+                                    <td className='w-fit'>
+                                        <div className='text-xs'>{20 * page + (key + 1)} </div>
+                                    </td>
+                                    <td>
+                                        <div title={data?.message} className='whitespace-nowrap text-xs'>
+                                            {data?.message.slice(0, 60)}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className='whitespace-nowrap text-xs'>{data?.to}</div>
+                                    </td>
+                                    <td>
+                                        <div className='whitespace-nowrap text-xs'>
+                                            {data?.price}/{data?.total_price}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className='whitespace-nowrap text-xs'>{getPrettyTime(data?.created_at)} </div>
+                                    </td>
+                                    <td>
+                                        <div className='whitespace-nowrap text-xs'>{getPrettyTime(data?.delivery_sm_at)} </div>
+                                    </td>
+                                    <td>
+                                        <div className='whitespace-nowrap text-xs'>{data?.status}</div>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                    </tbody>
+                    <ul className='flex items-center justify-center space-x-1 rtl:space-x-reverse  mt-8 mx-auto'>
+                        <li>
+                            <button
+                                disabled={page === 0}
+                                onClick={() => setPage(page - 1)}
+                                type='button'
+                                className='flex justify-center font-semibold p-2 rounded-full transition bg-white-light text-dark hover:text-white hover:bg-primary dark:text-white-light dark:bg-[#191e3a] dark:hover:bg-primary'
+                            >
+                                <svg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='w-5 h-5 rtl:rotate-180'>
+                                    <path d='M15 5L9 12L15 19' stroke='currentColor' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
+                                </svg>
+                            </button>
+                        </li>
+                        <li>
+                            <button
+                                type='button'
+                                className={`flex justify-center items-center w-10 h-10 font-semibold p-2 rounded-full transition  text-dark hover:text-white hover:bg-primary dark:text-white-light  dark:hover:bg-primary dark:bg-primary`}
+                            >
+                                {page + 1}
+                            </button>
+                        </li>
+
+                        <li>
+                            <button
+                                disabled={sended?.data?.total / 20 <= page + 1}
+                                onClick={() => setPage(page + 1)}
+                                type='button'
+                                className='flex justify-center font-semibold p-2 rounded-full transition bg-white-light text-dark hover:text-white hover:bg-primary dark:text-white-light dark:bg-[#191e3a] dark:hover:bg-primary'
+                            >
+                                <svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='rtl:rotate-180'>
+                                    <path d='M9 5L15 12L9 19' stroke='currentColor' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
+                                </svg>
+                            </button>
+                        </li>
+                    </ul>
+                </table>
             </div>
         </div>
     );

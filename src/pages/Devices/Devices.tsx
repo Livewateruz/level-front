@@ -19,7 +19,6 @@ function Devices () {
     const [page, setPage] = useState(1);
     const PAGE_SIZES = [10, 20, 30, 50, 100];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
-    const { token } = useSelector((state: IRootState) => state.data);
 
     useEffect(() => {
         setPage(1);
@@ -29,7 +28,6 @@ function Devices () {
             url: `/devices?page[offset]=${page - 1}&page[limit]=${pageSize}`,
             setData: setDevices,
             setLoading,
-            token
         });
     }, [page, pageSize]);
 
@@ -73,21 +71,22 @@ function Devices () {
                                         </span>
                                     )
                                 },
-                                {
-                                    accessor: 'Id',
-                                    sortable: false,
-                                    render: ({ _id }) => (
-                                        <span key={_id}>
-                                            <div className=' font-semibold'>{`${_id}`}</div>
-                                        </span>
-                                    )
-                                },
+                               
                                 {
                                     accessor: 'Obyekt nomi',
                                     sortable: false,
                                     render: ({ name }) => (
                                         <span>
                                             <div className=' font-semibold'>{`${name}`}</div>
+                                        </span>
+                                    )
+                                },
+                                {
+                                    accessor: 'Pudratchi',
+                                    sortable: false,
+                                    render: ({ contractor }) => (
+                                        <span>
+                                            <div className=' font-semibold'>{contractor}</div>
                                         </span>
                                     )
                                 },
@@ -113,23 +112,21 @@ function Devices () {
                                 {
                                     accessor: 'Egasi',
                                     sortable: false,
-                                    render: ({ owner }) => <div className='whitespace-nowrap flex items-center gap-2'>{owner?.first_name + ' ' + owner?.last_name}</div>
+                                    render: ({ owner }) => <div  className='whitespace-nowrap flex items-center gap-2'>{owner?.first_name + ' ' + owner?.last_name}</div>
                                 },
                                 {
                                     accessor: 'Status',
                                     sortable: false,
                                     render: ({ isWorking }) => (
                                         <div className='whitespace-nowrap flex items-center gap-2'>
-                                            {isWorking ? (
-                                                <>
+                                            {isWorking ? (<div title="Qurilma ishlayapti">
                                                     <GreenDot />
-                                                    Qurilma ishlayapti
-                                                </>
+                                                </div>
+                                                
                                             ) : (
-                                                <>
-                                                    <RedDot />
-                                                    Aloqa yo'q
-                                                </>
+                                                <div  title="Aloqa yo'q">
+                                                   <RedDot /> 
+                                                </div>
                                             )}
                                         </div>
                                     )

@@ -2,9 +2,9 @@ import { SetStateAction } from 'react';
 import { api } from './api';
 import { toast } from './toast';
 
-const getData = ({ url, token , setData, setLoading }: { url: string; token :string | boolean ; setData: SetStateAction<any>; setLoading?: SetStateAction<any> }) => {
+const getData = ({ url , setData, setLoading }: { url: string;  setData: SetStateAction<any>; setLoading?: SetStateAction<any> }) => {
     setLoading && setLoading(true);
-    api(url , { headers: { authorization: `Bearer ${token}` } })
+    api(url , )
         .then(res => {
             if (res.status === 200) {
                 setData(res.data);

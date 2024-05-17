@@ -17,12 +17,11 @@ const PreviewDevice = () => {
     const [file, setFile] = useState<File | null>(null);
     const [data, setData] = useState<DevicesFaceOpt>({});
     const [sendeData, setSendedData] = useState<DevicesFaceOpt>({});
-    const { token } = useSelector((state: IRootState) => state.data);
     const [regions, setRegions] = useState<{ data: RegionFace[] }>({ data: [] });
     const [users, setUsers] = useState<{ data: UserFace[] }>({ data: [] });
     const [loading, setLoading] = useState<'deleting' | 'updating' | 'noaction' | 'checking'>('noaction');
     useEffect(() => {
-        api(`devices/${id}`, { headers: { authorization: `Bearer ${token}` } })
+        api(`devices/${id}`)
             .then(res => {
                 const resdata: DevicesFace = res.data;
                 const owner = resdata?.owner?._id;
@@ -30,8 +29,8 @@ const PreviewDevice = () => {
                 setData({ ...res.data, owner, region });
             })
             .catch(err => {});
-        getData({ url: 'regions', setData: setRegions, token });
-        getData({ url: 'users', setData: setUsers, token });
+        getData({ url: 'regions', setData: setRegions });
+        getData({ url: 'users', setData: setUsers });
     }, []);
 
     const handleChange = (e: any) => {
@@ -59,7 +58,7 @@ const PreviewDevice = () => {
         }).then(result => {
             if (result.isConfirmed) {
                 setLoading('updating');
-                api.patch(`devices/${id}`, { ...sendeData, file }, { headers: { authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' } })
+                api.patch(`devices/${id}`, { ...sendeData, file }, { headers: { 'Content-Type': 'multipart/form-data' } })
                     .then(res => {
                         toast.fire({ icon: 'success', padding: '10px 20px', title: 'Yangilandi!' });
                         navigate(-1);
@@ -86,7 +85,7 @@ const PreviewDevice = () => {
         }).then(result => {
             if (result.isConfirmed) {
                 setLoading('deleting');
-                api.delete(`devices/${id}`, { headers: { authorization: `Bearer ${token}` } })
+                api.delete(`devices/${id}`)
                     .then(res => {
                         Swal.fire({ title: 'Deleted!', text: res.data.msg, icon: 'success', customClass: 'sweet-alerts' });
                         navigate(-1);
@@ -174,10 +173,17 @@ const PreviewDevice = () => {
                         </div>
                     </div>
                     <div className='mb-6  w-1/2'>
-                        <label className='block mb-2 text-sm font-medium text-gray-900 dark:text-white' htmlFor='multiple_files'>
-                            Passport seriyasini yuklash
-                        </label>
-                        <input
+                    <div className='flex items-center mt-4'>
+                            <label htmlFor='number' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
+                                Qurilma pudratchisi
+                            </label>
+                            <input defaultValue={data?.contractor} onChange={e => handleChange(e)} id='contractor' type='text' name='contractor' className='form-input lg:w-[270px] w-2/3' placeholder='Bobur Akramov' />
+                        </div>
+                        <div className='flex items-center '>
+                            <label htmlFor='number' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
+                                Qurilma passporti
+                            </label>
+                            <input
                             required={sendeData.serie !== undefined}
                             onChange={e => {
                                 const selectedFile = e.target?.files?.[0];
@@ -185,11 +191,11 @@ const PreviewDevice = () => {
                                     setFile(selectedFile);
                                 }
                             }}
-                            className='block w-full form-input '
+                            className=' mt-4 form-input w-1/2'
                             id='multiple_files'
                             accept='.xlsx'
                             type='file'
-                        />
+                        />                        </div>
                         <div className='flex items-center mt-4'>
                             <label htmlFor='invoiceLabel' className='flex-1 ltr:mr-2 rtl:ml-2 mb-0'>
                                 Biriktirilgan shaxs
@@ -238,7 +244,7 @@ const PreviewDevice = () => {
                             <button disabled={loading !== 'noaction'} onClick={deleteDevice} type='button' className='btn   btn-danger '>
                                 O'chirish {loading === 'deleting' && <Miniloader />}
                             </button>
-                           
+
                             <button disabled={loading !== 'noaction'} type='submit' className='btn   btn-outline-primary '>
                                 Yangilash {loading === 'updating' && <Miniloader />}
                             </button>

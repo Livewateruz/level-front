@@ -10,12 +10,11 @@ import { getDateFromTimestamp, getHourAndMinutesFromTimestamp } from '../utils/u
 const Index = () => {
     const [baseData, setBaseData] = useState<EventFace[]>([]);
     const [stat, setStat] = useState<{ total: number; good: number; bad: number }>({ total: 0, good: 0, bad: 0 });
-    const { token } = useSelector((state: IRootState) => state.data);
 
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(setPageTitle('Asosiy sahifa'));
-        api('basedata/last-updated?page[limit]=50' ,  { headers: { authorization: `Bearer ${token}` } }).then(res => {
+        api('basedata/last-updated?page[limit]=50' ).then(res => {
             const { data } = res;
             const bad = data.filter((el: EventFace) => el?.signal === 'nosignal');
             const good = data.filter((el: EventFace) => el?.signal === 'good');
@@ -48,13 +47,14 @@ const Index = () => {
                         <tr>
                             <th className='text-center'>#</th>
                             <th className='text-center'>Seriya</th>
-                            <th className='text-center'>Obyekt nomi</th>
-                            <th className='text-center'>Suv satxi(sm)</th>
+                            <th className='text-center'>Pudratchi</th>
+                            <th className='text-center'>Obyekt</th>
+                            <th className='text-center'>Satx(sm)</th>
                             <th className='text-center'>Hajm(m³/s)</th>
                             <th className='text-center'>Bosim (kPa)</th>
                             <th className='text-center'>Vaqt</th>
                             <th className='text-center'>Sana</th>
-                            <th className='text-center'>Signal darajasi</th>
+                            <th className='text-center'>Signal</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,6 +64,9 @@ const Index = () => {
                                            <td>{((i+1))}</td>
                                     <td className='whitespace-nowrap'>
                                         <div className='whitespace-nowrap'>{data?.device?.serie}</div>
+                                    </td>
+                                    <td className='whitespace-nowrap'>
+                                        <div className='whitespace-nowrap'>{data?.device?.contractor}</div>
                                     </td>
                                     <td>
                                                 <div className='whitespace-nowrap text-xs'>{data?.device?.name}</div>
@@ -87,7 +90,7 @@ const Index = () => {
                                     <td className='whitespace-nowrap'>
                                         <div className='whitespace-nowrap    flex items-center gap-2'>
                                             {' '}
-                                            {data.signal === "good" ? <GreenDot /> : <RedDot />} {data.signal === "good" ? 'Yaxshi' : "Signal yo'q"}{' '}
+                                            {data.signal === "good" ? <GreenDot /> : <RedDot />} {' '}
                                         </div>
                                     </td>
                                 </tr>
