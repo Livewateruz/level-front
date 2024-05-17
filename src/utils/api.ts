@@ -5,7 +5,7 @@ const server = `https://back2.livewater.uz`
 import Cookies from 'js-cookie';
 
 export const api = axios.create({
-    baseURL: local,
+    baseURL: server,
     headers: { 'Content-type': 'application/json' ,authorization: `Bearer ${Cookies.get('passport')}`  }
 });
 
