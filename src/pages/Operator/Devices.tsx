@@ -29,7 +29,7 @@ function UserDevices () {
             url: `/devices?page[offset]=${page - 1}&page[limit]=${pageSize}`,
             setData: setDevices,
             setLoading,
-            token
+        
         });
     }, [page, pageSize]);
 

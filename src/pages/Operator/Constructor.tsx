@@ -38,14 +38,14 @@ function ConstructorOperator () {
     const header = ['_id', 'level', 'volume', 'date_in_ms', 'signal'];
     useEffect(() => {
         dispatch(setPageTitle('Events'));
-        getData({ url: `devices`, token, setData: setDevices });
+        getData({ url: `devices`, setData: setDevices });
     }, []);
     useEffect(() => {
         getData({
             url: `basedata/?page[offset]=${page}${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}`,
             setData: setEvents,
             setLoading,
-            token
+        
         });
     }, [page]);
     const handleDownloadAll = () => {
@@ -86,7 +86,7 @@ function ConstructorOperator () {
             url: `/basedata?page[offset]=${page}${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}`,
             setData: setEvents,
             setLoading,
-            token
+            
         });
     };
     function handleDownloadExcel () {

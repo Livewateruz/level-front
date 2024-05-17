@@ -16,7 +16,7 @@ function Users () {
 
     useEffect(() => {
         dispatch(setPageTitle('All users'));
-        getData({ url: '/users', setData: setUsers, token });
+        getData({ url: '/users', setData: setUsers });
     }, []);
 
     return (
