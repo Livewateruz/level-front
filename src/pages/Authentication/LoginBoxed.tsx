@@ -9,7 +9,6 @@ import { toast } from '../../utils/toast';
 
 const LoginBoxed = () => {
     const dispatch = useDispatch();
-    const [data, setData] = useState<{ email?: string; password?: string }>({});
     const [loading, setLoading] = useState<boolean>(false);
     const [visible, setVisible] = useState<boolean>(false);
     useEffect(() => {
@@ -17,6 +16,7 @@ const LoginBoxed = () => {
     });
     const { user } = useSelector((state: IRootState) => state.data);
     const navigate = useNavigate();
+    const [data, setData] = useState<{ email?: string; password?: string }>({});
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setData(pre => ({
             ...data,

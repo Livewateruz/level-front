@@ -73,7 +73,7 @@ function Events () {
         e.preventDefault();
         setPage(0);
         getData({
-            url: `/basedata?page[offset]=${page}${from ? `&page[limit]=50&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}${
+            url: `/basedata?page[offset]=${page}&page[limit]=50&${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}${
                 data?.region ? `&filter[region]=${data.region}` : ''
             }`,
             setData: setEvents,
