@@ -54,10 +54,10 @@ function Events () {
     const header = ['_id', 'level', 'volume', 'date_in_ms', 'signal', 'updated_at', 'created_at', 'serie', 'name', 'contractor'];
     useEffect(() => {
         dispatch(setPageTitle('Constructor'));
-        getData({ url: '/regions', setData: setRegions });
+        getData({ url: '/regions?page[limit]=10000', setData: setRegions });
     }, []);
     useEffect(() => {
-        getData({ url: `/devices?${data?.region ? `filter[region]=${data.region}` : ''}`, setData: setDevices });
+        getData({ url: `/devices?page[limit]=10000&${data?.region ? `filter[region]=${data.region}` : ''}`, setData: setDevices });
     }, [data?.region]);
     useEffect(() => {
         getData({

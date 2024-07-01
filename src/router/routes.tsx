@@ -9,7 +9,6 @@ const PreviewUser = lazy(() => import('../pages/Users/PreviewUser'));
 const Users = lazy(() => import('../pages/Users/Users'));
 const AddUser = lazy(() => import('../pages/Users/AddUser'));
 
-
 const About = lazy(() => import('../pages/About'));
 const Error = lazy(() => import('../components/Error'));
 
@@ -32,88 +31,88 @@ const routes = [
     {
         path: '/',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <Index />
     },
 
     {
         path: '/login',
         for: 'nouser',
-        layout :"blank" ,
+        layout: 'blank',
         element: <LoginBoxed />
     },
 
     {
         path: '/constructor',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <Constructor />
     },
     {
         path: '/events',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <ServerEvent />
     },
     {
         path: '/regions',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <Regions />
     },
     {
         path: '/devices',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <Devices />
     },
     {
         path: '/sms',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <Sms />
     },
     {
         path: '/device/map',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <DevicesMap />
     },
     {
         path: '/device/add',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <AddDevice />
     },
     {
         path: '/devices/:id',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <PreviewDevice />
     },
     {
         path: '/events/add-event',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <AddModem />
     },
     // !Users pages
     {
         path: '/users',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <Users />
     },
     {
         path: '/users/:id',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <PreviewUser />
     },
     {
         path: '/user/add',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <AddUser />
     },
 
@@ -121,31 +120,37 @@ const routes = [
     {
         path: '/',
         for: 'operator',
-        layout :"" ,
+        layout: '',
         element: <IndexOperator />
     },
     {
         path: '/constructor',
         for: 'operator',
-        layout :"" ,
+        layout: '',
         element: <ConstructorOperator />
+    },
+    {
+        path: '/device/map',
+        for: 'operator',
+        layout: '',
+        element: <DevicesMap />
     },
     {
         path: '/devices',
         for: 'operator',
-        layout :"" ,
+        layout: '',
         element: <UserDevices />
     },
     {
         path: '/about',
         for: 'admin',
-        layout :"" ,
-        element: <About />,
+        layout: '',
+        element: <About />
     },
     {
         path: '*',
         for: 'admin',
-        layout :"" ,
+        layout: '',
         element: <Error />
     }
 ];

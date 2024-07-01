@@ -38,20 +38,19 @@ function ConstructorOperator () {
     const header = ['_id', 'level', 'volume', 'date_in_ms', 'signal'];
     useEffect(() => {
         dispatch(setPageTitle('Events'));
-        getData({ url: `devices`, setData: setDevices });
+        getData({ url: `devices?page[limit]=10000&`, setData: setDevices });
     }, []);
     useEffect(() => {
         getData({
             url: `basedata/?page[offset]=${page}${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}`,
             setData: setEvents,
-            setLoading,
-        
+            setLoading
         });
     }, [page]);
     const handleDownloadAll = () => {
-        const fileDownloadUrl = `https://back2.livewater.uz/basedata/xlsx?${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${
-            device ? `&filter[device]=${device}` : ''
-        }${data?.region ? `&filter[region]=${data.region}` : ''}${data?.limit ? `&page[limit]=${data.limit}` : ''}`;
+        const fileDownloadUrl = `https://back2.livewater.uz/basedata/xlsx?${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}${
+            data?.region ? `&filter[region]=${data.region}` : ''
+        }${data?.limit ? `&page[limit]=${data.limit}` : ''}`;
         axios({
             url: fileDownloadUrl,
             method: 'GET',
@@ -85,8 +84,7 @@ function ConstructorOperator () {
         getData({
             url: `/basedata?page[offset]=${page}${from ? `&filter[start]=${from}` : ''}${to ? `&filter[end]=${to}` : ''}${device ? `&filter[device]=${device}` : ''}`,
             setData: setEvents,
-            setLoading,
-            
+            setLoading
         });
     };
     function handleDownloadExcel () {
