@@ -110,7 +110,7 @@ const Sidebar = () => {
                                                 />
                                             </svg>
 
-                                            <span className='ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark'>{t('Serverga yo\'naltirilgan m...')}</span>
+                                            <span className='ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark'>{t("Serverga yo'naltirilgan m...")}</span>
                                         </div>
                                     </NavLink>
                                 </li>
@@ -214,7 +214,20 @@ const Sidebar = () => {
                                 <li className='nav-item'>
                                     <NavLink to='/sms' className='group'>
                                         <div className='flex items-center'>
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-6 h-6"><path d="M3.74157 18.5545C4.94119 20 7.17389 20 11.6393 20H12.3605C16.8259 20 19.0586 20 20.2582 18.5545M3.74157 18.5545C2.54194 17.1091 2.9534 14.9146 3.77633 10.5257C4.36155 7.40452 4.65416 5.84393 5.76506 4.92196M3.74157 18.5545C3.74156 18.5545 3.74157 18.5545 3.74157 18.5545ZM20.2582 18.5545C21.4578 17.1091 21.0464 14.9146 20.2235 10.5257C19.6382 7.40452 19.3456 5.84393 18.2347 4.92196M20.2582 18.5545C20.2582 18.5545 20.2582 18.5545 20.2582 18.5545ZM18.2347 4.92196C17.1238 4 15.5361 4 12.3605 4H11.6393C8.46374 4 6.87596 4 5.76506 4.92196M18.2347 4.92196C18.2347 4.92196 18.2347 4.92196 18.2347 4.92196ZM5.76506 4.92196C5.76506 4.92196 5.76506 4.92196 5.76506 4.92196Z" stroke="currentColor" stroke-width="1.5"></path><path opacity="0.5" d="M9.1709 8C9.58273 9.16519 10.694 10 12.0002 10C13.3064 10 14.4177 9.16519 14.8295 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path></svg>
+                                            <svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='w-6 h-6'>
+                                                <path
+                                                    d='M3.74157 18.5545C4.94119 20 7.17389 20 11.6393 20H12.3605C16.8259 20 19.0586 20 20.2582 18.5545M3.74157 18.5545C2.54194 17.1091 2.9534 14.9146 3.77633 10.5257C4.36155 7.40452 4.65416 5.84393 5.76506 4.92196M3.74157 18.5545C3.74156 18.5545 3.74157 18.5545 3.74157 18.5545ZM20.2582 18.5545C21.4578 17.1091 21.0464 14.9146 20.2235 10.5257C19.6382 7.40452 19.3456 5.84393 18.2347 4.92196M20.2582 18.5545C20.2582 18.5545 20.2582 18.5545 20.2582 18.5545ZM18.2347 4.92196C17.1238 4 15.5361 4 12.3605 4H11.6393C8.46374 4 6.87596 4 5.76506 4.92196M18.2347 4.92196C18.2347 4.92196 18.2347 4.92196 18.2347 4.92196ZM5.76506 4.92196C5.76506 4.92196 5.76506 4.92196 5.76506 4.92196Z'
+                                                    stroke='currentColor'
+                                                    stroke-width='1.5'
+                                                ></path>
+                                                <path
+                                                    opacity='0.5'
+                                                    d='M9.1709 8C9.58273 9.16519 10.694 10 12.0002 10C13.3064 10 14.4177 9.16519 14.8295 8'
+                                                    stroke='currentColor'
+                                                    stroke-width='1.5'
+                                                    stroke-linecap='round'
+                                                ></path>
+                                            </svg>
 
                                             <span className='ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark'>{t('Sms')}</span>
                                         </div>
@@ -307,7 +320,22 @@ const Sidebar = () => {
                                         </div>
                                     </NavLink>
                                 </li>
-                         
+                                <li className='nav-item'>
+                                    <NavLink to='/device/map' className='group'>
+                                        <div className='flex items-center'>
+                                            <svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg' className='w-6 h-6 group-hover:!text-primary'>
+                                                <path
+                                                    opacity='0.5'
+                                                    d='M4 10.1433C4 5.64588 7.58172 2 12 2C16.4183 2 20 5.64588 20 10.1433C20 14.6055 17.4467 19.8124 13.4629 21.6744C12.5343 22.1085 11.4657 22.1085 10.5371 21.6744C6.55332 19.8124 4 14.6055 4 10.1433Z'
+                                                    stroke='currentColor'
+                                                    strokeWidth='1.5'
+                                                ></path>
+                                                <circle cx='12' cy='10' r='3' stroke='currentColor' strokeWidth='1.5'></circle>
+                                            </svg>
+                                            <span className='ltr:pl-3 rtl:pr-3 text-black dark:text-[#506690] dark:group-hover:text-white-dark'>{t('Qurilmalar xaritada')}</span>
+                                        </div>
+                                    </NavLink>
+                                </li>
                             </ul>
                         )}
                     </PerfectScrollbar>
