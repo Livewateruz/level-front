@@ -26,4 +26,5 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
+    - run: sudo rm -rf /var/www/level
     - run: sudo cp -r /home/ubuntu/level-front/_work/level-front/level-front/dist/ /var/www/level
