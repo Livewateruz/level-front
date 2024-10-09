@@ -15,11 +15,9 @@ const dataConfigSlice = createSlice({
     initialState: initialState,
     reducers: {
         setToken (state, { payload }) {
-            const expirationTime = 7 * 24 * 60 * 60 * 1000;
-            const expirationDate = new Date(Date.now() + expirationTime);
-            Cookies.set('accsessToken', payload.accsessToken, { path: '/', expires: expirationDate });
+            Cookies.set('accsessToken', payload.accsessToken, { path: '/', expires : 7 });
             state.accsessToken = payload.accsessToken;
-            Cookies.set('refreshToken', payload.refreshToken, { path: '/', expires: expirationDate });
+            Cookies.set('refreshToken', payload.refreshToken, { path: '/', expires : 30 });
             state.refreshToken = payload.refreshToken;
         },
         setUser (state, { payload }) {
