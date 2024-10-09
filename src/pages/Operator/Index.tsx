@@ -12,12 +12,12 @@ const IndexOperator = () => {
     const [baseData, setBaseData] = useState<EventFace[]>([]);
     const [stat, setStat] = useState<{ total: number; good: number; bad: number }>({ total: 0, good: 0, bad: 0 });
     const [loading, setLoading] = useState(false);
-    const { token } = useSelector((state: IRootState) => state.data);
+    const {    accsessToken} = useSelector((state: IRootState) => state.data);
 
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(setPageTitle('Asosiy sahifa'));
-        api('basedata/last-updated', { headers: { authorization: `Bearer ${token}` } })
+        api('basedata/last-updated', { headers: { authorization: `Bearer ${accsessToken}` } })
             .then(res => {
                 const { data } = res;
                 const bad = data.filter((el: EventFace) => el.signal === 'nosignal');

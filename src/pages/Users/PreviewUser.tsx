@@ -14,7 +14,7 @@ const PreviewUser = () => {
     const [form, setForm] = useState<UserFaceOpt>({});
     const [regions, setRegions] = useState<RegionFace[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
-    const token = useSelector((state : IRootState) => state.data.token)
+    const token = useSelector((state : IRootState) => state.data.accsessToken)
     const navigate =  useNavigate()
     useEffect(() => {
         setLoading(true);

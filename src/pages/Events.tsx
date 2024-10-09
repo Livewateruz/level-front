@@ -32,7 +32,7 @@ function Events () {
     const [devices, setDevices] = useState<{ data: DevicesFace[] }>({ data: [] });
     const [loading, setLoading] = useState<boolean>(false);
     const [page, setPage] = useState<number>(0);
-    const { token } = useSelector((state: IRootState) => state.data);
+    const {    accsessToken} = useSelector((state: IRootState) => state.data);
 
     useEffect(() => {
         function handleKeyDown (event: KeyboardEvent) {
@@ -108,7 +108,7 @@ function Events () {
             url: fileDownloadUrl,
             method: 'GET',
             responseType: 'blob',
-            headers: { authorization: `Bearer ${token}` },
+            headers: { authorization: `Bearer ${accsessToken}` },
             onDownloadProgress: e => {
                 const newProgress = Math.round((e.loaded * 100) / e.total!);
                 setProgress(newProgress);

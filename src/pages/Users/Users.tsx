@@ -12,7 +12,6 @@ function Users () {
     const [regions, setRegions] = useState<{ data: RegionFace[] }>({ data: [] });
     const [loading, setLoading] = useState<boolean>(false);
     const [page, setPage] = useState<number>(0);
-    const { token } = useSelector((state: IRootState) => state.data);
 
     useEffect(() => {
         dispatch(setPageTitle('All users'));

@@ -19,7 +19,7 @@ function UserDevices () {
     const [page, setPage] = useState(1);
     const PAGE_SIZES = [10, 20, 30, 50, 100];
     const [pageSize, setPageSize] = useState(PAGE_SIZES[0]);
-    const { token, user } = useSelector((state: IRootState) => state.data);
+    const {  user } = useSelector((state: IRootState) => state.data);
 
     useEffect(() => {
         setPage(1);

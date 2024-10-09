@@ -17,7 +17,7 @@ function ServerEvents () {
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState<number>(0);
     const [basedata, setBasedata] = useState<EventFace | null>();
-    const { token } = useSelector((state: IRootState) => state.data);
+    const {    accsessToken} = useSelector((state: IRootState) => state.data);
 
     useEffect(() => {
         dispatch(setPageTitle('Server Events'));

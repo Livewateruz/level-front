@@ -32,7 +32,7 @@ function ConstructorOperator () {
     const [devices, setDevices] = useState<{ data: DevicesFace[] }>({ data: [] });
     const [loading, setLoading] = useState<boolean>(false);
     const [page, setPage] = useState<number>(0);
-    const { token } = useSelector((state: IRootState) => state.data);
+    const {    accsessToken} = useSelector((state: IRootState) => state.data);
     const [progress, setProgress] = useState(0);
 
     const header = ['_id', 'level', 'volume', 'date_in_ms', 'signal'];
@@ -54,7 +54,7 @@ function ConstructorOperator () {
         axios({
             url: fileDownloadUrl,
             method: 'GET',
-            headers: { authorization: `Bearer ${token}` },
+            headers: { authorization: `Bearer ${accsessToken}` },
             responseType: 'blob',
             onDownloadProgress: e => {
                 const newProgress = Math.round((e.loaded * 100) / e.total!);

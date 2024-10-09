@@ -17,7 +17,7 @@ const Sms = () => {
     const [page, setPage] = useState<number>(0);
     const [delivered, setDelivered] = useState<any>();
     const [loading, setLoading] = useState<'refreshing' | 'uploading' | 'updating' | 'noaction'>('noaction');
-    const token = useSelector((state: IRootState) => state.data.token);
+    const token = useSelector((state: IRootState) => state.data.accsessToken);
 
     const [report, setReport] = useState<{ year?: string; month?: string }>({});
     useEffect(() => {
