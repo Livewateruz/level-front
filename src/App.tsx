@@ -52,7 +52,7 @@ function App({ children }: PropsWithChildren) {
     themeConfig.locale,
     themeConfig.semidark,
   ]);
-  const { token } = useSelector((state: IRootState) => state.data);
+  const { accsessToken } = useSelector((state: IRootState) => state.data);
   return (
     <div
       className={`${
@@ -61,7 +61,7 @@ function App({ children }: PropsWithChildren) {
         themeConfig.rtlClass
       } main-section antialiased relative font-nunito text-sm font-normal`}
     >
-      {token ? children  :<LoginBoxed /> }
+        {children  }
     </div>
   );
 }

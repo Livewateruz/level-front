@@ -45,7 +45,8 @@ const Header = () => {
     const { user }: { user: UserFace } = useSelector((state: IRootState) => state.data);
     const { t } = useTranslation();
     function sighout (){
-     Cookies.remove('passport')
+     Cookies.remove('accsessToken')
+     Cookies.remove('refreshToken')
     navigate('/login')
     }
     return (

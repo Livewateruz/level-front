@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 
 const DefaultLayout = ({ children }: PropsWithChildren) => {
     const themeConfig = useSelector((state: IRootState) => state.themeConfig);
-    const { token , role } = useSelector((state: IRootState) => state.data);
+    const { accsessToken , role } = useSelector((state: IRootState) => state.data);
     const dispatch = useDispatch();
     const [showLoader, setShowLoader] = useState(true);
     const [showTopButton, setShowTopButton] = useState(false);
@@ -34,7 +34,7 @@ const DefaultLayout = ({ children }: PropsWithChildren) => {
 
     useEffect(() => {
         window.addEventListener('scroll', onScrollHandler);
-        if (token) {
+        if (accsessToken) {
             api('auth')
                 .then(res => {
                     if (res.status === 200) {

@@ -4,7 +4,8 @@ import Cookies from 'js-cookie';
 
 const rawCookieData = Cookies.get('data');
 const initialState = {
-    token: Cookies.get('passport') || false,
+    accsessToken: Cookies.get('accsessToken') || false,
+    refreshToken: Cookies.get('refreshToken') || false,
     user: rawCookieData ? JSON.parse(rawCookieData) : false,
     role :  "admin"
 };
@@ -16,8 +17,10 @@ const dataConfigSlice = createSlice({
         setToken (state, { payload }) {
             const expirationTime = 7 * 24 * 60 * 60 * 1000;
             const expirationDate = new Date(Date.now() + expirationTime);
-            Cookies.set('passport', payload.token, { path: '/', expires: expirationDate });
-            state.token = payload.token;
+            Cookies.set('accsessToken', payload.accsessToken, { path: '/', expires: expirationDate });
+            state.accsessToken = payload.accsessToken;
+            Cookies.set('refreshToken', payload.refreshToken, { path: '/', expires: expirationDate });
+            state.refreshToken = payload.refreshToken;
         },
         setUser (state, { payload }) {
             state.user = payload.user;

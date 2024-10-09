@@ -5,8 +5,8 @@ const server = `https://back2.livewater.uz`
 import Cookies from 'js-cookie';
 
 export const api = axios.create({
-    baseURL: server,
-    headers: { 'Content-type': 'application/json' ,authorization: `Bearer ${Cookies.get('passport')}`  }
+    baseURL: local,
+    headers: { 'Content-type': 'application/json' ,authorization: `Bearer ${Cookies.get('refreshToken')}`  }
 });
 
 export const deleteItem = (url: string, header: AxiosRequestConfig<any>) => {
