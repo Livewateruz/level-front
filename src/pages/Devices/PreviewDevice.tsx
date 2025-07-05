@@ -28,7 +28,7 @@ const PreviewDevice = () => {
                 const region = resdata?.region?._id;
                 setData({ ...res.data, owner, region });
             })
-            .catch(err => {});
+            .catch(err => { });
         getData({ url: 'regions', setData: setRegions });
         getData({ url: 'users', setData: setUsers });
     }, []);
@@ -72,7 +72,7 @@ const PreviewDevice = () => {
             }
         });
     };
-    function deleteDevice () {
+    function deleteDevice() {
         Swal.fire({
             icon: 'warning',
             title: "Qurilama o'chiriladi?",
@@ -171,9 +171,16 @@ const PreviewDevice = () => {
                                 </select>
                             </div>
                         </div>
+                        <div className='flex items-center mt-4'>
+                            <label htmlFor='height' className='flex-1 ltr:mr-2 rtl:ml-2 mb-0'>
+                                Qurilma joylashgan balandligi
+                            </label>
+                            <input onChange={e => handleChange(e)} defaultValue={data?.height} id='height' type='text' name='height' className='form-input lg:w-[270px] w-2/3' placeholder='1870' />
+                        </div>
+
                     </div>
                     <div className='mb-6  w-1/2'>
-                    <div className='flex items-center mt-4'>
+                        <div className='flex items-center mt-4'>
                             <label htmlFor='number' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
                                 Qurilma pudratchisi
                             </label>
@@ -184,18 +191,18 @@ const PreviewDevice = () => {
                                 Qurilma passporti
                             </label>
                             <input
-                            required={sendeData.serie !== undefined}
-                            onChange={e => {
-                                const selectedFile = e.target?.files?.[0];
-                                if (selectedFile) {
-                                    setFile(selectedFile);
-                                }
-                            }}
-                            className=' mt-4 form-input w-1/2'
-                            id='multiple_files'
-                            accept='.xlsx'
-                            type='file'
-                        />                        </div>
+                                required={sendeData.serie !== undefined}
+                                onChange={e => {
+                                    const selectedFile = e.target?.files?.[0];
+                                    if (selectedFile) {
+                                        setFile(selectedFile);
+                                    }
+                                }}
+                                className=' mt-4 form-input w-1/2'
+                                id='multiple_files'
+                                accept='.xlsx'
+                                type='file'
+                            />                        </div>
                         <div className='flex items-center mt-4'>
                             <label htmlFor='invoiceLabel' className='flex-1 ltr:mr-2 rtl:ml-2 mb-0'>
                                 Biriktirilgan shaxs
