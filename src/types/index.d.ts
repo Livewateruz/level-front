@@ -5,6 +5,7 @@ export interface DevicesFace {
     long: number;
     serie: string;
     name: string;
+    height: number;
     device_privet_key: string;
     contractor: string;
     date: number;
@@ -25,6 +26,7 @@ export interface DevicesFaceOpt {
     contractor?: string;
     lat?: number;
     long?: number;
+    height?: number;
     serie?: string;
     name?: string;
     device_privet_key?: string;

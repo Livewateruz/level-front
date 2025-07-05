@@ -8,7 +8,7 @@ import { DevicesFace } from '../../types';
 import getData from '../../utils/getData';
 import { _CardSection } from '@mantine/core/lib/Card/CardSection/CardSection';
 import { GreenDot, RedDot } from '../../../public/assets/svgs';
-function Devices () {
+function Devices() {
     const [devices, setDevices] = useState<{ total: number; offset: number; data: DevicesFace[]; limit: number }>({ data: [], limit: 0, offset: 0, total: 0 });
     const [loading, setLoading] = useState<boolean>(false);
     const dispatch = useDispatch();
@@ -71,7 +71,7 @@ function Devices () {
                                         </span>
                                     )
                                 },
-                               
+
                                 {
                                     accessor: 'Obyekt nomi',
                                     sortable: false,
@@ -87,6 +87,15 @@ function Devices () {
                                     render: ({ contractor }) => (
                                         <span>
                                             <div className=' font-semibold'>{contractor}</div>
+                                        </span>
+                                    )
+                                },
+                                {
+                                    accessor: 'Uzunligi',
+                                    sortable: false,
+                                    render: ({ height }) => (
+                                        <span>
+                                            <div className=' font-semibold'>{height}</div>
                                         </span>
                                     )
                                 },
@@ -112,7 +121,7 @@ function Devices () {
                                 {
                                     accessor: 'Egasi',
                                     sortable: false,
-                                    render: ({ owner }) => <div  className='whitespace-nowrap flex items-center gap-2'>{owner?.first_name + ' ' + owner?.last_name}</div>
+                                    render: ({ owner }) => <div className='whitespace-nowrap flex items-center gap-2'>{owner?.first_name + ' ' + owner?.last_name}</div>
                                 },
                                 {
                                     accessor: 'Status',
@@ -120,12 +129,12 @@ function Devices () {
                                     render: ({ isWorking }) => (
                                         <div className='whitespace-nowrap flex items-center gap-2'>
                                             {isWorking ? (<div title="Qurilma ishlayapti">
-                                                    <GreenDot />
-                                                </div>
-                                                
+                                                <GreenDot />
+                                            </div>
+
                                             ) : (
-                                                <div  title="Aloqa yo'q">
-                                                   <RedDot /> 
+                                                <div title="Aloqa yo'q">
+                                                    <RedDot />
                                                 </div>
                                             )}
                                         </div>

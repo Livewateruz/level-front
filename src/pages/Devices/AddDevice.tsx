@@ -17,7 +17,7 @@ const AddDevice = () => {
     const [users, setUsers] = useState<{ data: UserFace[] }>({ data: [] });
     const [loading, setLoading] = useState<"creating" | "checking" | "noaction">("noaction");
     const [file, setFile] = useState<File | null>(null);
-   
+
     useEffect(() => {
         getData({ url: 'regions', setData: setRegions });
         getData({ url: 'users', setData: setUsers });
@@ -51,14 +51,14 @@ const AddDevice = () => {
                     })
                     .catch(err => {
                         toast.fire({ icon: 'error', padding: '10px 20px', title: err.response?.data.msg || err.message });
-                    }).finally(()=>{
+                    }).finally(() => {
                         setLoading("noaction")
                     });
             }
         });
     };
 
- 
+
     return (
         <div>
             <ul className='flex space-x-2 rtl:space-x-reverse'>
@@ -77,11 +77,11 @@ const AddDevice = () => {
                 </li>
             </ul>
             <div className='flex justify-between  flex-wrap w-full  mt-5'>
-                <form onSubmit={e => handleSubmit(e)} className=' flex justify-between gap-32 px-10  w-full '>
-                    <div className='mb-6  w-1/2'>
-                         <div className='flex items-center mt-4'>
+                <form onSubmit={e => handleSubmit(e)} className=' flex flex-col md:flex-row justify-between gap-32 px-2 md:px-10   w-full '>
+                    <div className='mb-6  md:w-1/2 w-full'>
+                        <div className='flex items-center mt-4'>
                             <label htmlFor='name' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
-                            Obyekt nomi
+                                Obyekt nomi
                             </label>
                             <input required onChange={e => handleChange(e)} id='name' type='text' name='name' className='form-input lg:w-[270px] w-2/3' placeholder='123' />
                         </div>
@@ -92,7 +92,7 @@ const AddDevice = () => {
                             <input required onChange={e => handleChange(e)} id='number' type='text' name='serie' className='form-input lg:w-[270px] w-2/3' placeholder='864333048092134' />
                         </div>
 
-                       
+
                         <div className='flex items-center mt-4'>
                             <label htmlFor='private_key' className='flex-1 ltr:mr-2 rtl:ml-2 mb-0'>
                                 Qurilma maxfiy kodi
@@ -116,33 +116,39 @@ const AddDevice = () => {
                                 </select>
                             </div>
                         </div>
+                        <div className='flex items-center mt-4'>
+                            <label htmlFor='height' className='flex-1 ltr:mr-2 rtl:ml-2 mb-0'>
+                                Qurilma joylashgan balandligi
+                            </label>
+                            <input onChange={e => handleChange(e)} id='height' type='text' name='height' className='form-input lg:w-[270px] w-2/3' placeholder='1870' />
+                        </div>
                     </div>
- 
-                    <div className='mb-6  w-1/2'>
-                    <div className='flex items-center mt-4'>
+
+                    <div className='mb-6  md:w-1/2 w-full'>
+                        <div className='flex items-center mt-4'>
                             <label htmlFor='number' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
                                 Qurilma pudratchisi
                             </label>
                             <input required onChange={e => handleChange(e)} id='contractor' type='text' name='contractor' className='form-input lg:w-[270px] w-2/3' placeholder='Bobur Akramov' />
                         </div>
-                    <div className='flex items-center '>
-                            <label htmlFor='number' className='flex-1 ltr:mr-2 rtl:ml-2 mb-'>
+                        <div className='flex items-center '>
+                            <label htmlFor='number' className='flex-1 ltr:mr-2 rtl:ml-2 mt-4'>
                                 Qurilma passporti
                             </label>
                             <input
-                            required
-                            onChange={e => {
-                                const selectedFile = e.target?.files?.[0];
-                                if (selectedFile) {
-                                    setFile(selectedFile);
-                                }
-                            }}
-                            className='form-input w-1/2  mt-4 '
-                            id='multiple_files'
-                            accept='.xlsx'
-                            type='file'
-                        />                        </div>
-                        
+                                required
+                                onChange={e => {
+                                    const selectedFile = e.target?.files?.[0];
+                                    if (selectedFile) {
+                                        setFile(selectedFile);
+                                    }
+                                }}
+                                className='form-input lg:w-[270px] w-2/3 mt-4 '
+                                id='multiple_files'
+                                accept='.xlsx'
+                                type='file'
+                            />                        </div>
+
 
                         <div className='flex items-center mt-4'>
                             <label htmlFor='invoiceLabel' className='flex-1 ltr:mr-2 rtl:ml-2 mb-0'>
@@ -187,10 +193,10 @@ const AddDevice = () => {
                             </div>
                         </div>
                         <div className='flex justify-between mt-10'>
-                       
-                        <button type='submit' disabled={loading !== "noaction"} className='btn   btn-outline-primary  '>
-                            Saqlash {loading === "creating" && <Miniloader/>}
-                        </button>
+
+                            <button type='submit' disabled={loading !== "noaction"} className='btn   btn-outline-primary  '>
+                                Saqlash {loading === "creating" && <Miniloader />}
+                            </button>
                         </div>
                     </div>
                 </form>
