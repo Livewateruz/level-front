@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "uz_prod" ]
 
 jobs:
   build:
@@ -24,7 +24,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: sudo rm -rf /var/www/level
-    - run: sudo cp -r /home/ubuntu/level-front/_work/level-front/level-front/dist/ /var/www/level
+    # - run: npm ci
+    # - run: npm run build --if-present
+    # - run: sudo rm -rf /var/www/level
+    # - run: sudo cp -r /home/ubuntu/level-front/_work/level-front/level-front/dist/ /var/www/level
